@@ -11,3 +11,6 @@ http://localhost:9021
 
 schema depuis le control cender
 http://localhost:9021/clusters/R0cQ2Wq1ScyKmgWPQyetTA/management/topics/person-topic/schema/value
+
+# To produce message 
+http://localhost:8080/send
