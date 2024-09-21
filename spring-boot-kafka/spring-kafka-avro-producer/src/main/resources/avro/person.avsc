@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name": "Person",
+  "namespace": "com.esprit.avro.model",
+  "fields": [
+    { "name": "firstName", "type": "string" },
+    { "name": "lastName", "type": "string" },
+    { "name": "age", "type": "int" }
+  ]
+}
