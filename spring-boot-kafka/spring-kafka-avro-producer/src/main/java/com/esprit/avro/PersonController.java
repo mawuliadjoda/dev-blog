@@ -13,14 +13,20 @@ public class PersonController {
     @Autowired
     private PersonProducer personProducer;
 
+
+
     @GetMapping("/send")
     public String sendPerson() {
-        Person person = Person.newBuilder()
-                .setFirstName("John")
-                .setLastName("Doe")
-                .setAge(30)
-                .build();
-        personProducer.sendPerson(person);
+
+        for (int i = 0; i < 20; i++) {
+            Person person = Person.newBuilder()
+                    .setFirstName("John" + i)
+                    .setLastName("Doe" +i)
+                    .setAge(i)
+                    .build();
+            personProducer.sendPerson(person);
+        }
+
         return "Person sent!";
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.messaging.Message;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -30,6 +31,7 @@ public class PersonConsumer {
      * Si besoin d’accéder aux en-têtes de Spring Kafka et au payload, mais sans avoir besoin de gérer les détails techniques comme l'offset, Message<T> est suffisant
      * @param personMessage
      */
+   /*
     @KafkaListener(topics = "person-topic", groupId = "person-consumer-group")
     public void consume(Message<Person> personMessage) {
         System.out.println("Received Person: " + personMessage);
@@ -46,6 +48,16 @@ public class PersonConsumer {
                 headers.get(KafkaHeaders.PARTITION),
                 headers.get(KafkaHeaders.RECEIVED_PARTITION),
                 personMessage.getPayload());
+    }
+    */
+
+    @KafkaListener(topics = "person-topic", groupId = "person-consumer-group", containerFactory = "batchFactory")
+    public void consumeBatch(List<Message<Person>> personMessages) {
+        System.out.println("Received batch of Persons: " + personMessages.size());
+        for (Message<Person> personMessage : personMessages) {
+            System.out.println("Person: " + personMessage.getPayload());
+        }
+        System.out.println("-- ----End processing " + personMessages.size());
     }
 
 

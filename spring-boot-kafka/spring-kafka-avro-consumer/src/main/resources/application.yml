@@ -4,12 +4,11 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-      properties:
-        schema.registry.url: http://localhost:8081
     consumer:
+      enable-auto-commit: false
+      max-poll-records: 5  # Taille du lot de messages
+      fetch-min-bytes: 5000000 # Attendre qu'il y ait au moins 50 Ko de messages
+      fetch-max-wait: 10000 # Attendre au plus 100 ms si la taille minimale de données n'est pas atteinte
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
