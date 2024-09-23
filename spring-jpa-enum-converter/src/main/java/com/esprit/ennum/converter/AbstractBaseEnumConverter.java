@@ -8,13 +8,17 @@ import java.util.Arrays;
 
 public abstract class AbstractBaseEnumConverter<E extends Enum<E> & BaseEnum<T>, T> implements AttributeConverter<E, T> {
 
+    /*
     private final Class<E> enumClass;
 
     protected AbstractBaseEnumConverter(Class<E> enumClass) {
         this.enumClass = enumClass;
     }
 
-    // protected abstract E[] getValueList();
+     */
+
+    protected abstract E[] getValueList();
+
     @Override
     public T convertToDatabaseColumn(E attribute) {
         return attribute != null ? attribute.getLibelle() : null;
@@ -26,7 +30,15 @@ public abstract class AbstractBaseEnumConverter<E extends Enum<E> & BaseEnum<T>,
             return null;
         }
 
+
+        /*
         return Arrays.stream(enumClass.getEnumConstants())
+                .filter(e -> e.getLibelle().equals(dbData))
+                .findFirst()
+                .orElseThrow(IllegalAccessError::new);
+
+         */
+        return Arrays.stream(getValueList())
                 .filter(e -> e.getLibelle().equals(dbData))
                 .findFirst()
                 .orElseThrow(IllegalAccessError::new);
