@@ -3,10 +3,11 @@ package com.esprit.pagination.domain.service;
 import com.esprit.pagination.domain.model.Product;
 import com.esprit.pagination.ports.output.ProductOutputPort;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
