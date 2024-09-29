@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pagination?currentSchema=pagination_schema
+    username: ekwateur
+    password: secret
