@@ -1,9 +1,6 @@
 package com.esprit.pagination.infrastructure.adapter.output.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -21,5 +18,9 @@ public class ProductEntity {
     private String name;
 
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryEntity_id")
+    private CategoryEntity categoryEntity;
 
 }
