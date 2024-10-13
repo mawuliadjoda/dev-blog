@@ -1,6 +1,8 @@
 package com.esprit.pagination.domain.service;
 
+import com.esprit.pagination.domain.model.PaginatedData;
 import com.esprit.pagination.domain.model.Product;
+import com.esprit.pagination.domain.model.common.PageableQueryRequest;
 import com.esprit.pagination.ports.output.ProductOutputPort;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -73,5 +76,37 @@ class ProductServiceTest {
         List<Product> allProducts = productService.findAllProducts();
         Assertions.assertThat(products).usingRecursiveFieldByFieldElementComparator().containsExactlyElementsOf(allProducts);
 
+    }
+
+    @Test
+    void getAllPaginatedProducts() {
+        Product product1 = Product.builder()
+                .id(1L)
+                .name("test")
+                .description("test")
+                .build();
+
+        Product product2 = Product.builder()
+                .id(2L)
+                .name("test2")
+                .description("test2")
+                .build();
+        List<Product> products = List.of(product1, product2);
+        PaginatedData<Product> productPaginatedData = PaginatedData.<Product>builder()
+                .content(products)
+                .totalElements(2L)
+                .totalPages(2)
+                .last(true)
+                .build();
+        PageableQueryRequest pageableQueryRequest = PageableQueryRequest.builder()
+                .pageNumber(0)
+                .pageSize(2)
+                .build();
+
+
+        given(productOutputPort.getAllPaginatedProducts(any())).willReturn(productPaginatedData);
+
+        PaginatedData<Product> allPaginatedProducts = productService.getAllPaginatedProducts(pageableQueryRequest);
+        Assertions.assertThat(allPaginatedProducts.getContent()).usingRecursiveFieldByFieldElementComparator().containsExactlyElementsOf(allPaginatedProducts.getContent());
     }
 }

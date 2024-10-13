@@ -1,10 +1,9 @@
 package com.esprit.pagination.ports.input;
 
-import com.esprit.pagination.domain.model.PaginatedResult;
+import com.esprit.pagination.domain.model.PaginatedData;
 import com.esprit.pagination.domain.model.Product;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.esprit.pagination.domain.model.common.PageableQueryRequest;
 
 public interface GetAllPaginatedProductsUseCase {
-    PaginatedResult<Product> getAllPaginatedProducts(Pageable pageable);
+    PaginatedData<Product> getAllPaginatedProducts(PageableQueryRequest pageableQueryRequest);
 }

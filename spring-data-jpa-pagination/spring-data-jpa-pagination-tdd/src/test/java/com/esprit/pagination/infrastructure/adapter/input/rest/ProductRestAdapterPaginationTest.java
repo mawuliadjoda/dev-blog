@@ -1,20 +1,17 @@
 package com.esprit.pagination.infrastructure.adapter.input.rest;
 
-import com.esprit.pagination.domain.model.PaginatedResult;
+import com.esprit.pagination.domain.model.PaginatedData;
 import com.esprit.pagination.domain.model.Product;
-import com.esprit.pagination.infrastructure.adapter.input.rest.data.response.ProductCreateResponse;
+import com.esprit.pagination.domain.model.common.PageableQueryRequest;
 import com.esprit.pagination.infrastructure.adapter.input.rest.data.response.ProductQueryResponse;
-import com.esprit.pagination.infrastructure.adapter.input.rest.mapper.PaginatedResultMapper;
-import com.esprit.pagination.infrastructure.adapter.input.rest.mapper.ProductRestMapper;
+import com.esprit.pagination.infrastructure.adapter.input.rest.mapper.ProductRestResponseMapper;
+import com.esprit.pagination.infrastructure.adapter.input.rest.mapper.RestPageableRequestMapper;
 import com.esprit.pagination.ports.input.GetAllPaginatedProductsUseCase;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -36,17 +33,15 @@ class ProductRestAdapterPaginationTest {
 
     @MockBean
     GetAllPaginatedProductsUseCase getAllPaginatedProductsUseCase;
-
     @MockBean
-    ProductRestMapper productRestMapper;
-
+    ProductRestResponseMapper productRestResponseMapper;
     @MockBean
-    PaginatedResultMapper paginatedResultMapper;
+    RestPageableRequestMapper restPageableRequestMapper;
 
     @Test
     void getPaginatedProducts() throws Exception {
         // Given
-        List<Product> products = List.of (
+        List<Product> products = List.of(
                 new Product(1L, "Product 1", "Description 1"),
                 new Product(2L, "Product 2", "Description 2")
         );
@@ -54,13 +49,19 @@ class ProductRestAdapterPaginationTest {
                 new ProductQueryResponse(1L, "Product 1", "Description 1"),
                 new ProductQueryResponse(2L, "Product 2", "Description 2")
         );
+        PageableQueryRequest pageableQueryRequest = PageableQueryRequest.builder()
+                .pageNumber(0)
+                .pageSize(2)
+                .build();
+
         Pageable pageable = PageRequest.of(0, 2);
-        // Page<Product> pagedProducts = new PageImpl<>(products, pageable, products.size());
-        PaginatedResult<Product> pagedProducts = new PaginatedResult<>(products, 0, products.size(), 2, 1);
-        PaginatedResult<ProductQueryResponse> pagedProductQueryResponses = new PaginatedResult<>(productQueryResponses, 0, productQueryResponses.size(), 2, 1);
-        when(getAllPaginatedProductsUseCase.getAllPaginatedProducts(pageable)).thenReturn(pagedProducts);
-        //when(productRestMapper.toProductQueryResponses(products)).thenReturn(productQueryResponses);
-        when(paginatedResultMapper.toProductQueryResponsePage(pagedProducts)).thenReturn(pagedProductQueryResponses);
+        PaginatedData<Product> pagedProducts = new PaginatedData<>(products, 2L, products.size(), true);
+        PaginatedData<ProductQueryResponse> pagedProductQueryResponses = new PaginatedData<>(productQueryResponses, 2L, productQueryResponses.size(), true);
+
+        when(restPageableRequestMapper.toRequest(pageable)).thenReturn(pageableQueryRequest);
+
+        when(getAllPaginatedProductsUseCase.getAllPaginatedProducts(pageableQueryRequest)).thenReturn(pagedProducts);
+        when(productRestResponseMapper.toResponse(pagedProducts)).thenReturn(pagedProductQueryResponses);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/paginated-products")
                         .param("page", "0")
