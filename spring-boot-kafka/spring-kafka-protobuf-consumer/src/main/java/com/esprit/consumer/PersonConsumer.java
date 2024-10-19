@@ -49,7 +49,7 @@ public class PersonConsumer {
     }
     */
 
-    @KafkaListener(topics = "product-topic", groupId = "product-consumer-group", containerFactory = "batchFactory")
+    @KafkaListener(topics = "product-topic", groupId = "product-protobuf-consumer", containerFactory = "batchFactory")
     public void consumeBatch(List<Message<Product>> productMessages) {
         System.out.println("Received batch of products: " + productMessages.size());
         for (Message<Product> productMessage : productMessages) {
