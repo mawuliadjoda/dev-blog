@@ -33,5 +33,18 @@ lefort@ADJODA:/mnt/d/dev/Java/git/Kafka-Streams-with-Spring-Cloud/kafka-installa
 sh-4.4$ kafka-console-consumer --topic test_topic --bootstrap-server localhost:9092 --from-beginning
 {"name": "ADJODA Mawuli", ����"age": 34, "genre": "male"}
 {"name": "ADJODA Anaya", "age":1, "genre": "female"}
-	
-	
+
+
+
+API REST du Schema Registry
+
+http://localhost:8081/subjects/person-topic-value/versions/latest
+
+
+
+Utiliser Control Center
+
+http://localhost:9021
+
+schema depuis le control cender
+http://localhost:9021/clusters/R0cQ2Wq1ScyKmgWPQyetTA/management/topics/person-topic/schema/value

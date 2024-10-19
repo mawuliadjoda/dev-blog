@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "dev.pravin.proto.product";
+option java_multiple_files = true;
+option java_outer_classname = "ProductProto";
+
+message Product {
+    int32 product_id = 1;
+    string name = 2;
+    string description = 3;
+}
