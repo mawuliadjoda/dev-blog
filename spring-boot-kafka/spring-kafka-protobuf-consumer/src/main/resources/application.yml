@@ -20,6 +20,6 @@ spring:
       specific:
         protobuf:
           value:
-            type: dev.pravin.proto.product.Product
+            type: com.esprit.proto.product.Product
     listener:
       missing-topics-fatal: false

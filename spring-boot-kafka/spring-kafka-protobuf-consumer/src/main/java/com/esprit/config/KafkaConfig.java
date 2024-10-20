@@ -1,6 +1,6 @@
 package com.esprit.config;
 
-import dev.pravin.proto.product.Product;
+import com.esprit.proto.product.Product;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;

@@ -1,7 +1,7 @@
 package com.esprit.consumer;
 
 
-import dev.pravin.proto.product.Product;
+import com.esprit.proto.product.Product;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.Message;
