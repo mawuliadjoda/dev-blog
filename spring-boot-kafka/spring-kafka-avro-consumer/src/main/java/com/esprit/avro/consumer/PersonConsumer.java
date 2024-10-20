@@ -51,6 +51,10 @@ public class PersonConsumer {
     }
     */
 
+    /**
+     * consommation par lot
+     * @param personMessages
+     */
     @KafkaListener(topics = "person-topic", groupId = "person-consumer-group", containerFactory = "batchFactory")
     public void consumeBatch(List<Message<Person>> personMessages) {
         System.out.println("Received batch of Persons: " + personMessages.size());

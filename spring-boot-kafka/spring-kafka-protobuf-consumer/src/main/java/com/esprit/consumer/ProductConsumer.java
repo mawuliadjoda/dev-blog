@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Log4j2
-public class PersonConsumer {
+public class ProductConsumer {
 
     /**
      * si besoin que du contenu principal du message, et aucun besoin des métadonnées, utiliser simplement
@@ -49,6 +49,10 @@ public class PersonConsumer {
     }
     */
 
+    /**
+     * consommation par lot
+     * @param productMessages
+     */
     @KafkaListener(topics = "product-topic", groupId = "product-protobuf-consumer", containerFactory = "batchFactory")
     public void consumeBatch(List<Message<Product>> productMessages) {
         System.out.println("Received batch of products: " + productMessages.size());
