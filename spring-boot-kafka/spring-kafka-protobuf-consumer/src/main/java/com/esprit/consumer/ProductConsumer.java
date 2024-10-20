@@ -4,6 +4,7 @@ package com.esprit.consumer;
 import com.esprit.proto.product.Product;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
@@ -53,13 +54,20 @@ public class ProductConsumer {
      * consommation par lot
      * @param productMessages
      */
-    @KafkaListener(topics = "product-topic", groupId = "product-protobuf-consumer", containerFactory = "batchFactory")
-    public void consumeBatch(List<Message<Product>> productMessages) {
-        System.out.println("Received batch of products: " + productMessages.size());
-        for (Message<Product> productMessage : productMessages) {
-            System.out.println("Product: " + productMessage.getPayload());
-        }
-        System.out.println("-- ----End processing " + productMessages.size());
+    @KafkaListener(topics = "product-topic", groupId = "product-protobuf-consumer", containerFactory = "batchFactory", errorHandler = "customErrorHandler")
+    public void consumeBatch(List<Message<Product>> productMessages, Acknowledgment ack) {
+       try {
+           System.out.println("Received batch of products: " + productMessages.size());
+           for (Message<Product> productMessage : productMessages) {
+               System.out.println("Product: " + productMessage.getPayload());
+           }
+           log.info("-- ----End processing {}", productMessages.size());
+
+           // Après traitement réussi, confirmer le message
+           ack.acknowledge();
+       } catch (Exception e) {
+           log.info("Erreur pendant le traitement du message : {}", e.getMessage());
+       }
     }
 
 

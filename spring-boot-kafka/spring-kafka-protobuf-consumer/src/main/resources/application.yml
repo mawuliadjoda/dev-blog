@@ -12,7 +12,17 @@ spring:
       value-deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
       client-id: ${spring.application.name}
       group-id: ${spring.application.name}-group
-      auto-offset-reset: earliest
+      auto-offset-reset: earliest   # Consommer les messages depuis le début si l'offset n'est pas trouvé
+      enable-auto-commit: false     # Désactivation de l'acquittement automatique
+
+      # Configuration si on est batch processing
+      # Nombre maximum de messages à lire en une seule interrogation (par défaut 500)
+      max-poll-records: 500        # Par défaut, 500 messages peuvent être récupérés à chaque fois
+      # Valeurs spécifiques aux performances
+      fetch-max-wait: 500 # Temps maximal que Kafka attendra avant d'envoyer les messages au consommateur (par défaut : 500 ms)
+      fetch-min-size: 1   # Nombre minimum d'octets pour envoyer un lot de messages au consommateur (par défaut : 1 octet)
+      # End Configuration si on est batch processing
+
     properties:
       schema:
         registry:
@@ -23,3 +33,4 @@ spring:
             type: com.esprit.proto.product.Product
     listener:
       missing-topics-fatal: false
+      ack-mode: manual # Mode manuel pour l'acquittement des messages

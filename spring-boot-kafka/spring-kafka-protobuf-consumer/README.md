@@ -35,3 +35,6 @@ Figure 1. A proto definition.`
 @see https://medium.com/@pravin3c/spring-kafka-using-protobuf-as-a-message-format-6370e44bcf21
 
 @see https://blog.devgenius.io/json-vs-protobuf-and-using-protobuf-with-kafka-e412b159a5ca
+
+
+@see Error handling : https://medium.com/@pravin3c/poison-pill-in-kafka-and-ways-to-handle-it-157fbc09338b
