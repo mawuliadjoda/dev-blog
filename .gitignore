@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+spring-boot-kafka/spring-boot-kafka-ssl/certificate_folder/
