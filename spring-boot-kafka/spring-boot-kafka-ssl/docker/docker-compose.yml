@@ -19,8 +19,8 @@ services:
       #KAFKA_SSL_CLIENT_AUTH: 'none '
       KAFKA_SSL_KEYSTORE_FILENAME: '/certs/kafka.server.keystore.jks'
       KAFKA_SSL_KEYSTORE_CREDENTIALS: '/certs/kafka_keystore_credentials'
-      KAFKA_SSL_KEY_CREDENTIALS: '/certs/kafka_sslkey_credentials.txt'
+      KAFKA_SSL_KEY_CREDENTIALS: '/certs/kafka_sslkey_credentials'
       KAFKA_SSL_TRUSTSTORE_FILENAME: '/certs/kafka.server.truststore.jks'
-      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: '/certs/kafka_truststore_credentials.txt'
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: '/certs/kafka_truststore_credentials'
     volumes:
       - ./server_certs:/etc/kafka/secrets/certs
