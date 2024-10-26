@@ -27,6 +27,6 @@ public class KafkaProducer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        sendMessage("tes", "test-topic");
+        sendMessage("test", "test-topic");
     }
 }

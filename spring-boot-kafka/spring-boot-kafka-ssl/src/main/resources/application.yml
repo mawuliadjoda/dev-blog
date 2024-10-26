@@ -2,20 +2,41 @@ spring:
   kafka:
     bootstrap-servers: localhost:9093
     security:
-      protocol: "SSL"
+      protocol: "SSL"  # Assurez-vous que le serveur Kafka est configuré pour utiliser SSL
     ssl:
-      key-store-location: classpath:client_certs/springapp.keystore.jks
-      key-store-password: appPassword
-      trust-store-location: classpath:client_certs/kafka.server.truststore.jks
-      trust-store-password: appPassword
+      endpoint.identification.algorithm: ""
+      key-store-location: classpath:client_certs/client.keystore.jks  # Vérifiez le chemin
+      key-store-password: password  # Assurez-vous que c'est le bon mot de passe
+      trust-store-location: classpath:client_certs/client.truststore.jks  # Vérifiez le chemin
+      trust-store-password: password  # Assurez-vous que c'est le bon mot de passe
     consumer:
       group-id: demo-group-id
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      ssl:
+        endpoint.identification.algorithm: ""
+
+      #ssl:
+      #  endpoint-identification-algorithm: ""
+      #  key-store-location: classpath:client_certs/client.keystore.jks  # Vérifiez le chemin
+      #  key-store-password: password  # Assurez-vous que c'est le bon mot de passe
+      #  trust-store-location: classpath:client_certs/client.truststore.jks  # Vérifiez le chemin
+      #  trust-store-password: password  # Assurez-vous que c'est le bon mot de passe
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      ssl:
+        endpoint.identification.algorithm: ""
+
+      #ssl:
+      #  endpoint-identification-algorithm: ""
+      #  key-store-location: classpath:client_certs/client.keystore.jks  # Vérifiez le chemin
+      #  key-store-password: password  # Assurez-vous que c'est le bon mot de passe
+      #  trust-store-location: classpath:client_certs/client.truststore.jks  # Vérifiez le chemin
+      #  trust-store-password: password  # Assurez-vous que c'est le bon mot de passe
+
 
 
 

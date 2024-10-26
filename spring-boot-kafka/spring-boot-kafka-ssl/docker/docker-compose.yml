@@ -13,20 +13,10 @@ services:
       - "9092:9092"
       - "9093:9093"
     environment:
-      #KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,SSL://localhost:9093
-      #KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181  # Ajoutez cette ligne
-      #KAFKA_SSL_KEYSTORE_FILENAME: kafka.server.keystore.jks
-      #KAFKA_SSL_KEYSTORE_PASSWORD: 'serverpassword'
-      #KAFKA_SSL_KEY_CREDENTIALS: ssl-key-credential.txt
-      #KAFKA_SSL_KEYSTORE_CREDENTIALS: kafka_keystore_credentials.txt
-      #KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
-      #KAFKA_SSL_TRUSTSTORE_PASSWORD: 'serverpassword'
-      #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,SSL:SSL
-
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,SSL://localhost:9093
-      KAFKA_SSL_CLIENT_AUTH: 'required'
+      #KAFKA_SSL_CLIENT_AUTH: 'required'
+      KAFKA_SSL_CLIENT_AUTH: 'none '
       KAFKA_SSL_KEYSTORE_FILENAME: '/certs/kafka.server.keystore.jks'
       KAFKA_SSL_KEYSTORE_CREDENTIALS: '/certs/kafka_keystore_credentials'
       KAFKA_SSL_KEY_CREDENTIALS: '/certs/kafka_sslkey_credentials.txt'
