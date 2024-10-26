@@ -1,3 +1,7 @@
+# To run this command bellow to generate neccessary certificate for the test
+
+    sh generate_certificate.sh
+
 ------------ Kafka
 1. Génération du Keystore pour Kafka
    Commande pour Générer le Keystore de Kafka
