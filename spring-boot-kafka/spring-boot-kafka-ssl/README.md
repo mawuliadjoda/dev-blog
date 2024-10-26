@@ -9,13 +9,32 @@
        -dname "CN=localhost, OU=TD Bank ON, O=TD Bank, L=Toronto, S=ON, C=CA"
 
 
-    Explications des paramètres :
+   Explications des paramètres :
 		-alias kafka-server : nom de l'alias pour le certificat.
 		-keyalg RSA : spécifie l'algorithme de clé.
 		-keysize 2048 : taille de la clé.
 		-keystore kafka.server.keystore.jks : nom du fichier du keystore.
 		-validity 365 : validité du certificat en jours.
 		-dname : le nom Distinguished Name (DN) qui inclut CN=localhost, ce qui est crucial pour éviter les erreurs de validation de nom d'hôte.
+
+   => 
+   KAFKA_SSL_KEYSTORE_CREDENTIALS: Le mot de passe du keystore est défini lors de sa création dans la commande -storepass utilisée ici. 
+             
+		  keytool -genkeypair -alias kafka-server \
+		  -keyalg RSA -keysize 2048 \
+		  -keystore kafka.server.keystore.jks -validity 365 \
+		  -storepass password \
+		  -dname "CN=localhost, OU=TD Bank ON, O=TD Bank, L=Toronto, S=ON, C=CA"
+		  
+  =>
+  KAFKA_SSL_KEY_CREDENTIALS: Par défaut, Keytool utilise le même mot de passe pour le keystore et la clé privée. Cependant, si vous souhaitez définir un mot de passe différent pour la clé privée, vous pouvez le faire en ajoutant l’option -keypass lors de la création de la paire de clés :
+         
+		 keytool -genkeypair -alias kafka-server \
+		  -keyalg RSA -keysize 2048 \
+		  -keystore kafka.server.keystore.jks -validity 365 \
+		  -storepass password \
+		  -keypass privatekeypassword \
+		  -dname "CN=localhost, OU=TD Bank ON, O=TD Bank, L=Toronto, S=ON, C=CA"
 
 
 2. Exporter le Certificat de Kafka
