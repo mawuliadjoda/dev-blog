@@ -1,0 +1,59 @@
+#server:
+#  port: 8080
+
+spring:
+  application:
+    name: "product-protobuf-producer"
+  kafka:
+    bootstrap-servers: https://localhost:9092
+    #properties:
+    #  security.protocol: SSL
+    #  auto.register.schemas: true
+    #  value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
+    #  schema.registry.url: http://localhost:8082
+    security:
+      protocol: "SSL"  # Assurez-vous que le serveur Kafka est configuré pour utiliser SSL
+
+    ssl:
+      protocol: SSL
+      key-password: changeit
+      key-store-location: classpath:certificates/application.client.keystore.jks
+      key-store-password: changeit
+      key-store-type: JKS
+      trust-store-location: classpath:certificates/application.client.truststore.jks
+      trust-store-password: changeit
+
+      trust-store-type: JKS
+
+    #ssl:
+    #  endpoint.identification.algorithm: ""
+    #  key-store-location: classpath:client_certs/client-producer.keystore.jks  # Vérifiez le chemin
+    #  key-store-password: password  # Assurez-vous que c'est le bon mot de passe
+    #  trust-store-location: classpath:client_certs/client-producer.truststore.jks  # Vérifiez le chemin
+    #  trust-store-password: password  # Assurez-vous que c'est le bon mot de passe
+
+
+    properties:
+      schema:
+        registry:
+          url: https://localhost:8082
+    producer:
+      ssl:
+        endpoint.identification.algorithm: ""
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+      client-id: ${spring.application.name}
+      properties:
+        enable.idempotence: true
+
+
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:certificates/application.client.keystore.jks
+    key-store-password: changeit
+    keyStoreType: JKS
+    trust-store: classpath:certificates/application.client.truststore.jks
+    trust-store-password: changeit
+    trustStoreType: JKS
