@@ -31,5 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-bounded-context/data/*-db.mv.db
