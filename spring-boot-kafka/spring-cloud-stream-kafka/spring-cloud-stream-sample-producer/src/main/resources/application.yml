@@ -1,0 +1,25 @@
+server:
+  port: 8181
+
+spring:
+  application:
+    name: '@project.artifactId@'
+    #name: spring-cloud-stream-sample-producer
+
+  cloud:
+    function:
+      definition: myProducer  # Nom de la fonction définie dans l'application
+
+    stream:
+      bindings:
+
+        # Binding pour le producer
+        myProducer-out-0:
+          destination: my-topic-test          # Nom du topic Kafka
+          content-type: application/json  # Format des messages
+
+      kafka:
+        binder:
+          brokers: localhost:9092         # Adresse des brokers Kafka
+          auto-create-topics: true
+

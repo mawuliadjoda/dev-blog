@@ -1,0 +1,26 @@
+server:
+  port: 8182
+
+spring:
+  application:
+    name: '@project.artifactId@'
+    #name: spring-cloud-stream-sample-consumer
+
+  cloud:
+    function:
+      definition: myConsumer  # Nom de la fonction définie dans l'application
+
+    stream:
+      bindings:
+        # Binding pour le consumer
+        myConsumer-in-0:
+          destination: my-topic-test           # Nom du topic Kafka
+          group: my-group                 # Groupe Kafka
+          content-type: application/json  # Format des messages
+
+      kafka:
+        binder:
+          brokers: localhost:9092         # Adresse des brokers Kafka
+          configuration:
+            auto-offset-reset: earliest   # Configurer le comportement pour les offsets
+
