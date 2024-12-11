@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: '@project.artifactId@'
-    #name: spring-cloud-stream-sample-consumer
 
   cloud:
     function:
