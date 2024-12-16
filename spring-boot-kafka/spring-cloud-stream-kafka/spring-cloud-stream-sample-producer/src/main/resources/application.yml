@@ -8,7 +8,7 @@ spring:
 
   cloud:
     function:
-      definition: myProducer  # Nom de la fonction définie dans l'application
+      definition: myProducer;myProducerBatch  # Nom de la fonction définie dans l'application
 
     stream:
       bindings:
@@ -16,6 +16,10 @@ spring:
         # Binding pour le producer
         myProducer-out-0:
           destination: my-topic-test          # Nom du topic Kafka
+          content-type: application/json  # Format des messages
+
+        myProducerBatch-out-0:
+          destination: my-topic-test-batch          # Nom du topic Kafka
           content-type: application/json  # Format des messages
 
       kafka:

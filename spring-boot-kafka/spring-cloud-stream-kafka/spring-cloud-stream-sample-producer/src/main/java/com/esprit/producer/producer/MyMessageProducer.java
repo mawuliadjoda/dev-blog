@@ -18,5 +18,6 @@ public class MyMessageProducer {
     public void sendMessage(String messageContent) {
         Message<String> message = MessageBuilder.withPayload(messageContent).build();
         streamBridge.send("myProducer-out-0", message);  // Envoie du message via StreamBridge
+        streamBridge.send("myProducerBatch-out-0", message);  // Envoie du message via StreamBridge
     }
 }

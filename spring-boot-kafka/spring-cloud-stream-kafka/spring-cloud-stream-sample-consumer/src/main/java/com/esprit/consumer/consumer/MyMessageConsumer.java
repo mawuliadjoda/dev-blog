@@ -13,10 +13,10 @@ import java.util.function.Consumer;
 @Configuration
 public class MyMessageConsumer {
 
-   private final MyService myService;
+    private final MyService myService;
 
     @Bean
-   public Consumer<Message<String>> myConsumer() {
+    public Consumer<Message<String>> myConsumer() {
         return message -> {
             log.info("Received message: {}", message.getPayload());
             myService.processMessage(message.getPayload());

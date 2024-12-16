@@ -7,7 +7,7 @@ spring:
 
   cloud:
     function:
-      definition: myConsumer  # Nom de la fonction définie dans l'application
+      definition: myConsumer;myConsumerBatch  # Nom de la fonction définie dans l'application
 
     stream:
       bindings:
@@ -16,6 +16,15 @@ spring:
           destination: my-topic-test           # Nom du topic Kafka
           group: my-group                 # Groupe Kafka
           content-type: application/json  # Format des messages
+
+        myConsumerBatch-in-0:
+          destination: my-topic-test
+          group: my-group
+          content-type: application/json
+          consumer:
+            batch-mode: true
+            use-native-decoding: true
+
 
       kafka:
         binder:
