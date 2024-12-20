@@ -1,5 +1,7 @@
 package com.esprit.infrastructure.adapter.input.rest;
 
+import com.esprit.application.ports.input.GetAllProductUseCase;
+import com.esprit.domain.search.ProductSearchCriteria;
 import com.esprit.infrastructure.adapter.input.rest.data.request.ProductCreateRequest;
 import com.esprit.infrastructure.adapter.input.rest.data.response.ProductCreateResponse;
 import com.esprit.infrastructure.adapter.input.rest.data.response.ProductQueryResponse;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class ProductRestAdapter {
     private final CreateProductUseCase createProductUseCase;
     private final GetProductUseCase getProductUseCase;
     private final ProductRestMapper productRestMapper;
+    private final GetAllProductUseCase getAllProductUseCase;
 
     @PostMapping(value = "/products")
     public ResponseEntity<ProductCreateResponse> createProduct(@RequestBody @Valid ProductCreateRequest productCreateRequest) {
@@ -37,5 +42,24 @@ public class ProductRestAdapter {
     public ResponseEntity<ProductQueryResponse> getProduct(@PathVariable Long id) {
         Product product = getProductUseCase.getProductById(id);
         return new ResponseEntity<>(productRestMapper.toProductQueryResponse(product), HttpStatus.OK);
+    }
+
+    // @GetMapping(value = "/products")
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<ProductQueryResponse>> getAllProduct(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description
+    ) {
+
+        // Specification<ProductEntity> spec = Specification.where(ProductSpecifications.nameContains(name))
+        //         .and(ProductSpecifications.descriptionContains(description));
+
+        ProductSearchCriteria criteria = ProductSearchCriteria.builder()
+                .name(name)
+                .description(description)
+                .build();
+
+        List<Product> products = getAllProductUseCase.findAll(criteria);
+        return new ResponseEntity<>(productRestMapper.toProductQueryResponses(products), HttpStatus.OK);
     }
 }

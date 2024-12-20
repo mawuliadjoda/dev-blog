@@ -2,12 +2,26 @@ spring:
   application:
     name: '@project.artifactId@'
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  #jpa:
+  #  hibernate:
+  #    ddl-auto: update
+  #  database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  #datasource:
+  #  url: jdbc:postgresql://localhost:5432/pagination?currentSchema=pagination_schema
+  #  username: ekwateur
+  #  password: secret
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/pagination?currentSchema=pagination_schema
-    username: ekwateur
-    password: secret
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true

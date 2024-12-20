@@ -2,13 +2,16 @@ package com.esprit.infrastructure.adapter.output.persistence;
 
 import com.esprit.application.ports.output.ProductOutputPort;
 import com.esprit.domain.model.Product;
+import com.esprit.domain.search.ProductSearchCriteria;
+import com.esprit.infrastructure.adapter.output.persistence.specification.ProductSpecifications;
 import com.esprit.infrastructure.adapter.output.persistence.entity.ProductEntity;
 import com.esprit.infrastructure.adapter.output.persistence.mapper.ProductPersistenceMapper;
 import com.esprit.infrastructure.adapter.output.persistence.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -36,4 +39,18 @@ public class ProductPersistenceAdapter implements ProductOutputPort {
         Product product = productPersistenceMapper.toProduct(productEntity.get());
         return Optional.of(product);
     }
+
+    @Override
+    public List<Product> findAll(ProductSearchCriteria productSearchCriteria) {
+        Specification<ProductEntity> spec = Specification.where(ProductSpecifications.nameContains(productSearchCriteria.getName()))
+                .and(ProductSpecifications.descriptionContains(productSearchCriteria.getDescription()));
+
+
+        return productPersistenceMapper.toProducts(productRepository.findAll(spec));
+    }
+
+    // @Override
+    // public List<Product> findAll(Specification<ProductEntity> specification) {
+    //     return productPersistenceMapper.toProducts(productRepository.findAll(specification));
+    // }
 }

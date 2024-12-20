@@ -1,4 +1,4 @@
-package com.esprit.application.ports.output;
+package com.esprit.application.ports.input;
 
 import com.esprit.domain.model.Product;
 import com.esprit.domain.search.ProductSearchCriteria;
@@ -6,13 +6,8 @@ import com.esprit.infrastructure.adapter.output.persistence.entity.ProductEntity
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface ProductOutputPort {
-    Product saveProduct(Product product);
-
-    Optional<Product> getProductById(Long id);
-
+public interface GetAllProductUseCase {
     // List<Product> findAll(Specification<ProductEntity> specification);
     List<Product> findAll(ProductSearchCriteria productSearchCriteria);
 }
