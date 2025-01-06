@@ -17,4 +17,8 @@ public class ProductCreateRequest {
     @NotEmpty(message = "Description may not be empty")
     private String description;
 
+    private Double price;
+
+    private String priceOperation;
+
 }

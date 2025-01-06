@@ -16,4 +16,7 @@ public class ProductQueryResponse {
 
     private String description;
 
+    private Double price;
+
+    private String priceOperation;
 }

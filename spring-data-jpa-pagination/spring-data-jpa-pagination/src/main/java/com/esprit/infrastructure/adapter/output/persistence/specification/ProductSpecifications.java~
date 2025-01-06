@@ -25,7 +25,7 @@ public class ProductSpecifications {
 
     public static Specification<ProductEntity> hasPriceGreaterThan(Double price) {
         return (root, query, criteriaBuilder) ->
-                price == null ? criteriaBuilder.conjunction() : criteriaBuilder.greaterThan(root.get("price"), price);
+                price == null ? criteriaBuilder.conjunction() : criteriaBuilder.equal(root.get("price"), price);
     }
 
     public static Specification<ProductEntity> hasPriceLessThan(Double price) {

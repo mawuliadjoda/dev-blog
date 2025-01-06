@@ -16,6 +16,4 @@ public class ProductCreateResponse {
 
     private String description;
 
-    private Double price;
-
 }

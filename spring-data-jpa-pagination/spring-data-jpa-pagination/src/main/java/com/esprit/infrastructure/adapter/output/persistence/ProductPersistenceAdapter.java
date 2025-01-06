@@ -43,12 +43,26 @@ public class ProductPersistenceAdapter implements ProductOutputPort {
     @Override
     public List<Product> findAll(ProductSearchCriteria productSearchCriteria) {
         Specification<ProductEntity> spec = Specification.where(ProductSpecifications.nameContains(productSearchCriteria.getName()))
-                .and(ProductSpecifications.descriptionContains(productSearchCriteria.getDescription()));
+                .and(ProductSpecifications.descriptionContains(productSearchCriteria.getDescription()))
+                .and(getPriceSpecification(productSearchCriteria.getPrice(), productSearchCriteria.getPriceOperation()));
 
 
         return productPersistenceMapper.toProducts(productRepository.findAll(spec));
     }
 
+
+    private Specification<ProductEntity> getPriceSpecification(Double price, String priceOperation) {
+        switch (priceOperation) {
+            case "gt":
+                return ProductSpecifications.hasPriceGreaterThan(price);
+            case "lt":
+                return ProductSpecifications.hasPriceLessThan(price);
+            case "eq":
+                return ProductSpecifications.hasPrice(price);
+            default:
+                return Specification.where(null);
+        }
+    }
     // @Override
     // public List<Product> findAll(Specification<ProductEntity> specification) {
     //     return productPersistenceMapper.toProducts(productRepository.findAll(specification));
