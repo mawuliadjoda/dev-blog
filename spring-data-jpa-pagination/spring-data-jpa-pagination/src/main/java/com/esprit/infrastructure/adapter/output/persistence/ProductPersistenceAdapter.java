@@ -2,6 +2,7 @@ package com.esprit.infrastructure.adapter.output.persistence;
 
 import com.esprit.application.ports.output.ProductOutputPort;
 import com.esprit.domain.model.Product;
+import com.esprit.domain.search.ProductDynamicSearchCriteria;
 import com.esprit.domain.search.ProductSearchCriteria;
 import com.esprit.infrastructure.adapter.output.persistence.specification.ProductSpecifications;
 import com.esprit.infrastructure.adapter.output.persistence.entity.ProductEntity;
@@ -46,6 +47,14 @@ public class ProductPersistenceAdapter implements ProductOutputPort {
                 .and(ProductSpecifications.descriptionContains(productSearchCriteria.getDescription()))
                 .and(getPriceSpecification(productSearchCriteria.getPrice(), productSearchCriteria.getPriceOperation()));
 
+
+        return productPersistenceMapper.toProducts(productRepository.findAll(spec));
+    }
+
+    @Override
+    public List<Product> findAll(ProductDynamicSearchCriteria productDynamicSearchCriteria) {
+        Specification<ProductEntity> spec = Specification.where(ProductSpecifications.hasNameIn(productDynamicSearchCriteria.getNames()))
+                .and(ProductSpecifications.hasDdescriptionIn(productDynamicSearchCriteria.getDescriptions()));
 
         return productPersistenceMapper.toProducts(productRepository.findAll(spec));
     }

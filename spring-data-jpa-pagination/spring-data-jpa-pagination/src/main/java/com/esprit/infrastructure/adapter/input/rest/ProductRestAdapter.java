@@ -1,6 +1,7 @@
 package com.esprit.infrastructure.adapter.input.rest;
 
 import com.esprit.application.ports.input.GetAllProductUseCase;
+import com.esprit.domain.search.ProductDynamicSearchCriteria;
 import com.esprit.domain.search.ProductSearchCriteria;
 import com.esprit.infrastructure.adapter.input.rest.data.request.ProductCreateRequest;
 import com.esprit.infrastructure.adapter.input.rest.data.response.ProductCreateResponse;
@@ -9,13 +10,17 @@ import com.esprit.infrastructure.adapter.input.rest.mapper.ProductRestMapper;
 import com.esprit.application.ports.input.CreateProductUseCase;
 import com.esprit.application.ports.input.GetProductUseCase;
 import com.esprit.domain.model.Product;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -46,6 +51,7 @@ public class ProductRestAdapter {
 
     /**
      * http://localhost:8080/api/v1/search?name=Pytho&price=999.98&priceOperation=gt
+     *
      * @param name
      * @param description
      * @param price
@@ -73,4 +79,38 @@ public class ProductRestAdapter {
         List<Product> products = getAllProductUseCase.findAll(criteria);
         return new ResponseEntity<>(productRestMapper.toProductQueryResponses(products), HttpStatus.OK);
     }
+
+
+    @Operation(
+            summary = "Recherche des produits avec filtres dynamiques",
+            description = "Permet de filtrer les produits par plusieurs critères en passant une Map de paramètres."
+    )
+    @GetMapping(value = "/dynamic-search")
+    public ResponseEntity<List<ProductQueryResponse>> searchProduct(
+            @Parameter(
+                    description = "Map de paramètres contenant les critères de recherche",
+                    example = """
+                            {
+                                "descriptions": ["desc 1", "desc 2"],
+                                "names": ["name 1", "name 2"]
+                            }
+                            """
+            )
+            @RequestParam MultiValueMap<String, String> params
+    ) {
+
+        List<String> descriptions = params.get("descriptions");
+
+         List<String> names = params.get("names");
+
+
+        ProductDynamicSearchCriteria productDynamicSearchCriteria = ProductDynamicSearchCriteria.builder()
+                .names(names)
+                .descriptions(descriptions)
+                .build();
+
+        List<Product> products = getAllProductUseCase.findAll(productDynamicSearchCriteria);
+        return new ResponseEntity<>(productRestMapper.toProductQueryResponses(products), HttpStatus.OK);
+    }
+
 }

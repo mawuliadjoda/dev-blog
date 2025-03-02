@@ -8,6 +8,7 @@ import com.esprit.application.ports.output.ProductOutputPort;
 import com.esprit.domain.event.ProductCreatedEvent;
 import com.esprit.domain.exception.ProductNotFound;
 import com.esprit.domain.model.Product;
+import com.esprit.domain.search.ProductDynamicSearchCriteria;
 import com.esprit.domain.search.ProductSearchCriteria;
 import com.esprit.infrastructure.adapter.output.persistence.entity.ProductEntity;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,11 @@ public class ProductService implements CreateProductUseCase, GetProductUseCase, 
     @Override
     public List<Product> findAll(ProductSearchCriteria productSearchCriteria) {
         return productOutputPort.findAll(productSearchCriteria);
+    }
+
+    @Override
+    public List<Product> findAll(ProductDynamicSearchCriteria productDynamicSearchCriteria) {
+        return productOutputPort.findAll(productDynamicSearchCriteria);
     }
 
 
