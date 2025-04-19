@@ -1,0 +1,21 @@
+
+spring:
+  application:
+    name: '@project.artifactId@'
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    #properties:
+    #  hibernate:
+    #    default_schema: cqrsDB_schema
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cqrsDB
+    username: root
+    password: root123
+
+
+server:
+  port: 8081
