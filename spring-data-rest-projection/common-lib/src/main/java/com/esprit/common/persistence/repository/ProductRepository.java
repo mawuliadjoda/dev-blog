@@ -13,8 +13,8 @@ import java.util.List;
 
 @RepositoryRestResource(
         collectionResourceRel = "products",
-        path = "products"
-        // ,excerptProjection = ProductSummary.class
+        path = "products",
+        excerptProjection = ProductSummary.class
 )
 public interface ProductRepository extends JpaRepository<ProductEntity, Long>, JpaSpecificationExecutor<ProductEntity>, CustomRepository<ProductEntity> {
 
