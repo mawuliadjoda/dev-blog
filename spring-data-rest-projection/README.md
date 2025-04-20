@@ -21,3 +21,8 @@ Projection definitions are picked up and made available for clients if they are:
 Flagged with the @Projection annotation and located in the same package (or sub-package) of the domain type, OR
 
 Manually registered by using RepositoryRestConfiguration.getProjectionConfiguration().addProjection(…)
+
+
+
+http://localhost:8080/api/products/search/by-name?name=Cacao&projection=productDetail
+http://localhost:8080/api/products/search/by-name?name=Cacao&projection=productSummary
