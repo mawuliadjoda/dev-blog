@@ -7,7 +7,18 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
-// https://docs.spring.io/spring-data/rest/reference/projections-excerpts.html
+/**
+ * <a href="https://docs.spring.io/spring-data/rest/reference/projections-excerpts.html">...</a>
+ *
+ * Projection definitions are picked up and made available for clients if they are:
+ *
+ * Flagged with the @Projection annotation and located in the same package (or sub-package) of the domain type, OR
+ *
+ * Manually registered by using RepositoryRestConfiguration.getProjectionConfiguration().addProjection(…)
+ */
+
+
+
 @Configuration
 public class RepositoryConfig implements RepositoryRestConfigurer {
 

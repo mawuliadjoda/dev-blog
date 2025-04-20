@@ -12,3 +12,12 @@
 
 3. GET / http://localhost:8080/api/products?projection=productDetail
 4.  Controller also works ! GET/ http://localhost:8080/api/v1/products
+
+
+# Note:
+https://docs.spring.io/spring-data/rest/reference/projections-excerpts.html
+Projection definitions are picked up and made available for clients if they are:
+
+Flagged with the @Projection annotation and located in the same package (or sub-package) of the domain type, OR
+
+Manually registered by using RepositoryRestConfiguration.getProjectionConfiguration().addProjection(…)
