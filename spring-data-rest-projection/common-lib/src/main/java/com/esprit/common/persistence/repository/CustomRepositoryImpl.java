@@ -24,7 +24,8 @@ public class CustomRepositoryImpl implements  CustomRepository<ProductEntity>{
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<ProductEntity> query = cb.createQuery(ProductEntity.class);
         Root<ProductEntity> root = query.from(ProductEntity.class);
-        query.where(cb.equal(root.get("name"), name));
+        // query.where(cb.equal(root.get("name"), name));
+        query.where(ProductSpecification.byName(name).toPredicate(root, query, cb));
         return em.createQuery(query).getResultList();
     }
 }
