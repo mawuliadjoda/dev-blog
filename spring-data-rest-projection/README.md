@@ -26,3 +26,10 @@ Manually registered by using RepositoryRestConfiguration.getProjectionConfigurat
 
 http://localhost:8080/api/products/search/by-name?name=Cacao&projection=productDetail
 http://localhost:8080/api/products/search/by-name?name=Cacao&projection=productSummary
+
+http://localhost:8080/api/products?page=0&size=5&sort=name,asc
+http://localhost:8080/api/products?projection=productDetail&?page=0&size=5&sort=name,asc
+http://localhost:8080/api/products?projection=productSummuray
+http://localhost:8080/api/products/search/by-name?name=Cacao
+http://localhost:8080/api/products/search/by-name?name=Cofee&projection=productDetail&?page=0&size=5&sort=name,asc
+http://localhost:8080/api/products/search/by-name?name=Cacao&projection=productSummary
