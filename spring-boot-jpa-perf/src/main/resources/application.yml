@@ -8,10 +8,22 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+    properties:
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        use_sql_comments: true
+
+
   datasource:
     url: jdbc:postgresql://localhost:5432/perf_db
     username: root
     password: root123
 
+logging:
+  level:
+    org:
+      hibernate:
+        stat: debug
 server:
   port: 8080
