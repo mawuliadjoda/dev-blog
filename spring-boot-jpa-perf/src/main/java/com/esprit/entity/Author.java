@@ -17,4 +17,8 @@ public class Author {
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Book> books;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bio_id")
+    private Bio bio;
 }
