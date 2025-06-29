@@ -48,3 +48,5 @@ root@b079b8565da8:/# hdfs dfs -put /data-local/part-00000-*.parquet /data/
 puis 
 
 docker compose restart spring-app
+
+docker logs spring-app
