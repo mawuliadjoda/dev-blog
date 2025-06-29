@@ -1,6 +1,7 @@
 # PREREQUIS: 
   A tester sur linux, car des souci de windows avec spark
-  Java 17 car spark n'est pas encore compatible avec Java 21
+  Java 17 car spark n'est pas encore compatible avec Java 21 => sudo update-alternatives --config java
+
 
 1. generer le fichier parquet => ParquetFileWriter.java generate()
 2. copier le fichier généré dans /installation/data-local
