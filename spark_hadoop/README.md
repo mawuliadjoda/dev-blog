@@ -34,3 +34,17 @@ root@b079b8565da8:/#
    http://localhost:9870/ aller dans utilities > browse the filesystem > on voit bien le repertoir "data"
    Le fichier "part-00000-dc46302e-c7e6-4bd2-af56-07e01a70a7f7-c000.snappy.parquet" existe bien dans le repertoire "data"
    http://localhost:9870/explorer.html#/data
+
+
+
+# Pour lancer tout dans docker compose
+
+après : docker compose up -d
+
+root@b079b8565da8:/# hdfs dfs -mkdir -p /data
+
+root@b079b8565da8:/# hdfs dfs -put /data-local/part-00000-*.parquet /data/
+
+puis 
+
+docker compose restart spring-app

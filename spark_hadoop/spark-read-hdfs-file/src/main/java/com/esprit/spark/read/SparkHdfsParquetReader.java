@@ -15,12 +15,14 @@ public class SparkHdfsParquetReader {
         SparkSession spark = SparkSession.builder()
                 .appName("Parquet HDFS Reader")
                 .master("local[*]") // Exécuter Spark localement
-                .config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000")
+                //.config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000")
+                .config("spark.hadoop.fs.defaultFS", "hdfs://namenode:9000")
                 .getOrCreate();
 
 
         //Dataset<Row> df = spark.read().parquet("hdfs://localhost:9000/data");
-        Dataset<Row> df = spark.read().parquet("hdfs://localhost:9000/data/part-00000-dc46302e-c7e6-4bd2-af56-07e01a70a7f7-c000.snappy.parquet");
+        // Dataset<Row> df = spark.read().parquet("hdfs://localhost:9000/data/part-00000-dc46302e-c7e6-4bd2-af56-07e01a70a7f7-c000.snappy.parquet");
+        Dataset<Row> df = spark.read().parquet("hdfs://namenode:9000/data/part-00000-dc46302e-c7e6-4bd2-af56-07e01a70a7f7-c000.snappy.parquet");
 
 
         df.printSchema();

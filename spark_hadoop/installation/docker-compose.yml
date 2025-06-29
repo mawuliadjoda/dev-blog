@@ -30,6 +30,20 @@ services:
     networks:
       - hadoop
 
+  spring-app:
+    build:
+      context: ./../spark-read-hdfs-file
+      dockerfile: Dockerfile
+    container_name: spring-app
+    depends_on:
+      - namenode
+    networks:
+      - hadoop
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+    ports:
+      - "8080:8080"
+
 volumes:
   namenode:
   datanode:
