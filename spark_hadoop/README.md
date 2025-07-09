@@ -51,5 +51,9 @@ docker compose restart spring-app
 
 docker logs spring-app
 
-#
-#
+
+# Update la lecture du fichier hadoop depuis IDE en utilisant Java 21 OK
+  problème Java 17 serait lié à la génération d'un fichier .parquet, pas un soucis de lecture avec java 21
+# Modifier 
+# C:\Windows\System32\drivers\etc\hosts
+  127.0.0.1 datanode
