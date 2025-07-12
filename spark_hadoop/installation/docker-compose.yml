@@ -26,7 +26,8 @@ services:
       - CLUSTER_NAME=hadoop-cluster
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
       - HDFS_CONF_dfs_datanode_data_dir=file:///hadoop/dfs/data
-      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
+      #- HDFS_CONF_dfs_datanode_hostname=datanode #important pour pouvoir deposer le fichier => à commenter après pour activer la ligne suivante
+      - HDFS_CONF_dfs_datanode_hostname=localhost  # utile pour pouvoir lire depuis une application externe au docker-compose sans devoir modifier le fichier /et/hosts "127.0.0.1 datanode"
     ports:
       - "9866:9866"   # 🔥 Port DATA pour les blocs HDFS
       - "9864:9864"   # Web UI du DataNode (optionnel)
@@ -36,19 +37,19 @@ services:
     networks:
       - hadoop
 
-  spring-app:
-    build:
-      context: ./../spark-read-hdfs-file
-      dockerfile: Dockerfile
-    container_name: spring-app
-    depends_on:
-      - namenode
-    networks:
-      - hadoop
-    environment:
-      - SPRING_PROFILES_ACTIVE=default
-    ports:
-      - "8080:8080"
+  #spring-app:
+  #  build:
+  #    context: ./../spark-read-hdfs-file
+  #    dockerfile: Dockerfile
+  #  container_name: spring-app
+  #  depends_on:
+  #    - namenode
+  #  networks:
+  #    - hadoop
+  #  environment:
+  #    - SPRING_PROFILES_ACTIVE=default
+  #  ports:
+  #    - "8080:8080"
 
 volumes:
   namenode:

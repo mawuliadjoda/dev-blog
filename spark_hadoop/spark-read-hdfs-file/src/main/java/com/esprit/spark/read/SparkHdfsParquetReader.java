@@ -27,17 +27,17 @@ public class SparkHdfsParquetReader {
         // Dataset<Row> df = spark.read().parquet("hdfs://namenode:9000/data/part-00000-dc46302e-c7e6-4bd2-af56-07e01a70a7f7-c000.snappy.parquet");
 
 
-        df.printSchema();
+        // df.printSchema();
 
 
-        df.show();
+        // df.show();
 
 
         // Convertit en Dataset<Person>
         Dataset<Person> peoples = df.as(Encoders.bean(Person.class));
 
 
-        peoples.show();
+        // peoples.show();
 
         List<Person> list = peoples.collectAsList();
 
