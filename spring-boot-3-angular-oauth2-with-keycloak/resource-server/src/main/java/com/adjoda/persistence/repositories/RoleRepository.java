@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface RoleRepository extends JpaRepository<Role, String> {
 
-    @Query("SELECT DISTINCT perm FROM Role r " +
-            "JOIN r.profiles p " +
-            "JOIN p.permissions perm " +
-            "WHERE r.name IN :roleNames")
+    @Query("""
+                SELECT DISTINCT perm FROM Role r
+                JOIN r.permissions perm
+                WHERE r.name IN :roleNames
+            """)
     List<Permission> findPermissionsByRoleNames(@Param("roleNames") List<String> roleNames);
+
 }

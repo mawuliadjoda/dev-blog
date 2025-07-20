@@ -6,22 +6,25 @@ import lombok.*;
 
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Entity
 public class Profile {
+
     @Id
-    private String code;
+    private String code; // ex: ProfilChefAgence
 
     @Column(nullable = false)
     private String label;
 
     @ManyToMany
-    @JoinTable(name = "profile_permission",
+    @JoinTable(
+            name = "profile_role",
             joinColumns = @JoinColumn(name = "profile_code"),
-            inverseJoinColumns = @JoinColumn(name = "permission_code"))
-    private List<Permission> permissions;
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
+    private List<Role> roles;
 }

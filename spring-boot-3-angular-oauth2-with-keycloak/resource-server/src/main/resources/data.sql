@@ -1,80 +1,88 @@
--- Table des permissions fines
-CREATE TABLE permission (
-                            code VARCHAR PRIMARY KEY,
-                            description TEXT NOT NULL
-);
+SET search_path TO mon_schema;
 
--- Table des profils métier
+-- TABLE des profils métiers
 CREATE TABLE profile (
                          code VARCHAR PRIMARY KEY,
                          label TEXT NOT NULL
 );
 
--- Table des rôles Keycloak
+-- TABLE des rôles techniques (ex: Keycloak)
 CREATE TABLE role (
                       name VARCHAR PRIMARY KEY
 );
 
--- Table de liaison profil <-> permission
-CREATE TABLE profile_permission (
-                                    profile_code VARCHAR NOT NULL REFERENCES profile(code) ON DELETE CASCADE,
-                                    permission_code VARCHAR NOT NULL REFERENCES permission(code) ON DELETE CASCADE,
-                                    PRIMARY KEY (profile_code, permission_code)
+-- TABLE des permissions (droits fins)
+CREATE TABLE permission (
+                            code VARCHAR PRIMARY KEY,
+                            description TEXT NOT NULL
 );
 
--- Table de liaison role <-> profile
-CREATE TABLE role_profile (
-                              role_name VARCHAR NOT NULL REFERENCES role(name) ON DELETE CASCADE,
+-- ASSOCIATION profile <-> role
+CREATE TABLE profile_role (
                               profile_code VARCHAR NOT NULL REFERENCES profile(code) ON DELETE CASCADE,
-                              PRIMARY KEY (role_name, profile_code)
+                              role_name VARCHAR NOT NULL REFERENCES role(name) ON DELETE CASCADE,
+                              PRIMARY KEY (profile_code, role_name)
+);
+
+-- ASSOCIATION role <-> permission
+CREATE TABLE role_permission (
+                                 role_name VARCHAR NOT NULL REFERENCES role(name) ON DELETE CASCADE,
+                                 permission_code VARCHAR NOT NULL REFERENCES permission(code) ON DELETE CASCADE,
+                                 PRIMARY KEY (role_name, permission_code)
 );
 
 
--- INSERT
-SET search_path TO mon_schema;
 
--- Permissions
+
+-- insert
+
 INSERT INTO permission (code, description) VALUES
                                                ('CAN_VIEW_CLIENTS', 'Voir les clients'),
                                                ('CAN_MODIFY_CLIENTS', 'Modifier les clients'),
                                                ('CAN_EXPORT_PDF', 'Exporter les synthèses PDF'),
-                                               ('CAN_VIEW_AUDIT_LOGS', 'Voir les logs'),
-                                               ('CAN_OPEN_TICKETS', 'Ouvrir des tickets support'),
-                                               ('CAN_ASSIGN_CONTRACTS', 'Attribuer des contrats');
+                                               ('CAN_VIEW_AUDIT_LOGS', 'Voir les journaux d’audit'),
+                                               ('CAN_OPEN_TICKETS', 'Ouvrir un ticket support'),
+                                               ('CAN_ASSIGN_CONTRACTS', 'Attribuer un contrat');
 
--- Profils
-INSERT INTO profile (code, label) VALUES
-                                      ('ChefAgence', 'Chef d’Agence'),
-                                      ('Conseiller', 'Conseiller Front'),
-                                      ('Auditeur', 'Auditeur'),
-                                      ('SupportClient', 'Support Client');
-
--- Profil <-> Permission
-INSERT INTO profile_permission VALUES
-                                   ('ChefAgence', 'CAN_VIEW_CLIENTS'),
-                                   ('ChefAgence', 'CAN_MODIFY_CLIENTS'),
-                                   ('ChefAgence', 'CAN_EXPORT_PDF'),
-                                   ('ChefAgence', 'CAN_ASSIGN_CONTRACTS'),
-
-                                   ('Conseiller', 'CAN_VIEW_CLIENTS'),
-                                   ('Conseiller', 'CAN_MODIFY_CLIENTS'),
-
-                                   ('Auditeur', 'CAN_VIEW_CLIENTS'),
-                                   ('Auditeur', 'CAN_VIEW_AUDIT_LOGS'),
-
-                                   ('SupportClient', 'CAN_VIEW_CLIENTS'),
-                                   ('SupportClient', 'CAN_OPEN_TICKETS');
-
--- Rôles Keycloak
 INSERT INTO role (name) VALUES
-                            ('CHEF_AGENCE'),
                             ('CONSEILLER'),
+                            ('CHEF_AGENCE'),
                             ('AUDITEUR'),
                             ('SUPPORT');
 
--- Rôle <-> Profil
-INSERT INTO role_profile VALUES
-                             ('CHEF_AGENCE', 'ChefAgence'),
-                             ('CONSEILLER', 'Conseiller'),
-                             ('AUDITEUR', 'Auditeur'),
-                             ('SUPPORT', 'SupportClient');
+INSERT INTO profile (code, label) VALUES
+                                      ('ProfilConseiller', 'Conseiller'),
+                                      ('ProfilChefAgence', 'Chef d’Agence'),
+                                      ('ProfilAuditeur', 'Auditeur'),
+                                      ('ProfilSupportClient', 'Support Client');
+
+-- On lie les profils aux rôles Keycloak
+INSERT INTO profile_role VALUES
+                             ('ProfilConseiller', 'CONSEILLER'),
+                             ('ProfilChefAgence', 'CHEF_AGENCE'),
+                             ('ProfilAuditeur', 'AUDITEUR'),
+                             ('ProfilSupportClient', 'SUPPORT');
+
+-- Permissions du rôle CONSEILLER
+INSERT INTO role_permission VALUES
+                                ('CONSEILLER', 'CAN_VIEW_CLIENTS'),
+                                ('CONSEILLER', 'CAN_MODIFY_CLIENTS');
+
+-- Permissions du rôle CHEF_AGENCE
+INSERT INTO role_permission VALUES
+                                ('CHEF_AGENCE', 'CAN_VIEW_CLIENTS'),
+                                ('CHEF_AGENCE', 'CAN_MODIFY_CLIENTS'),
+                                ('CHEF_AGENCE', 'CAN_EXPORT_PDF'),
+                                ('CHEF_AGENCE', 'CAN_ASSIGN_CONTRACTS');
+
+-- Permissions du rôle AUDITEUR
+INSERT INTO role_permission VALUES
+                                ('AUDITEUR', 'CAN_VIEW_CLIENTS'),
+                                ('AUDITEUR', 'CAN_VIEW_AUDIT_LOGS');
+
+-- Permissions du rôle SUPPORT
+INSERT INTO role_permission VALUES
+                                ('SUPPORT', 'CAN_VIEW_CLIENTS'),
+                                ('SUPPORT', 'CAN_OPEN_TICKETS');
+
+
