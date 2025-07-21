@@ -1,6 +1,6 @@
 For more detail: https://medium.com/@koffimawuli.adjoda_20701/spring-boot-3-oauth2-with-angular-271be28e9ffe
 
-
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:23.0.6 start-dev
 
 
 Profile → Role → Permission
