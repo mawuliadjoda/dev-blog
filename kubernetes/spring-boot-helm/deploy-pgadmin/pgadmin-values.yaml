@@ -1,0 +1,17 @@
+env:
+  email: lefort@connect-228.com
+  password: lefort123
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - host: pgadmin.localhost
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
