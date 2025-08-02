@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-helm-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-helm
+  template:
+    metadata:
+      labels:
+        app: spring-boot-helm
+    spec:
+      containers:
+        - name: spring-boot-helm
+          image: adjodamawuli/spring-boot-helm:1.0.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/springboothelm"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-helm
+spec:
+  type: ClusterIP
+  selector:
+    app: spring-boot-helm
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

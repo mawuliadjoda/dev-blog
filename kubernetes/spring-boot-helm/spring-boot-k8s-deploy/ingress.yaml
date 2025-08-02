@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-boot-helm-ingress
+  #annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: adjodadev.com
+      http:
+        paths:
+          #- path: "/springboothelm(/|$)(.*)"
+          - path: /springboothelm
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: spring-boot-helm
+                port:
+                  number: 80
