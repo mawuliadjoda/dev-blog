@@ -1,6 +1,34 @@
+
+server:
+  servlet:
+    context-path: '/springboothelm'
+  port: 8080
+
+
 spring:
   application:
     name: '@project.artifactId@'
-server:
-  servlet:
-    context-path: '@project.artifactId@'
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+    properties:
+      hibernate:
+        #generate_statistics: true
+        #format_sql: true
+        #use_sql_comments: true
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test_db
+    username: root
+    password: root123
+
+logging:
+  level:
+    org:
+      hibernate:
+        stat: debug

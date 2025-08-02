@@ -1,4 +1,4 @@
-package com.esprit;
+package com.esprit.controller;
 
 
 import lombok.RequiredArgsConstructor;
