@@ -23,3 +23,7 @@ helm install my-postgres bitnami/postgresql \
 --set auth.username=root \
 --set auth.password=password \
 --set auth.database=mydatabase
+
+
+# dashboard 
+http://pgadmin.localhost/
