@@ -54,6 +54,10 @@ spec:
               value: {{ .Values.env.SPRING_DATASOURCE_USERNAME }}
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.env.SPRING_DATASOURCE_PASSWORD }}
+            - name: KEYCLOAK_ISSUER_URI
+              value: {{ .Values.env.KEYCLOAK_ISSUER_URI}}
+            - name: KEYCLOAK_JWK_SET_URI
+              value: {{ .Values.env.KEYCLOAK_JWK_SET_URI}}
 
 
           {{- with .Values.livenessProbe }}

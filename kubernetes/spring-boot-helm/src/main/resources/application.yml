@@ -2,7 +2,7 @@
 server:
   servlet:
     context-path: '/springboothelm'
-  port: 8080
+  #port: 8181
 
 
 spring:
@@ -27,8 +27,23 @@ spring:
     username: root
     password: root123
 
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI}
+
+        #jwt:
+        #  # configuration needed for validating JWT token against our Keycloak server
+        #  issuer-uri: http://my-keycloak.default.svc.cluster.local:80/realms/adjoda-dev-realm
+        #  # Since JWT is signed and we need to verify its signature, we set the jwk-set-uri property to a Keycloak endpoint with
+        #  # the required data for JWT signature verification.
+        #  jwk-set-uri: http://my-keycloak.default.svc.cluster.local:80/realms/adjoda-dev-realm/protocol/openid-connect/certs
+
+
+
 logging:
   level:
-    org:
-      hibernate:
-        stat: debug
+    org.springframework.security: DEBUG

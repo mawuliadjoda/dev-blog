@@ -1,4 +1,4 @@
-package com.esprit.entities;
+package com.esprit.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

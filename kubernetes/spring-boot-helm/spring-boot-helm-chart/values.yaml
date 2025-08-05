@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.2"
+  tag: "1.0.13"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -61,6 +61,13 @@ env:
   SPRING_DATASOURCE_URL: jdbc:postgresql://my-postgres-postgresql.default.svc.cluster.local:5432/mydatabase
   SPRING_DATASOURCE_USERNAME: root
   SPRING_DATASOURCE_PASSWORD: password
+  #KEYCLOAK_ISSUER_URI: "http://my-keycloak.default.svc.cluster.local:80/realms/adjoda-dev-realm"
+  #KEYCLOAK_JWK_SET_URI: "http://my-keycloak.default.svc.cluster.local:80/realms/adjoda-dev-realm/protocol/openid-connect/certs"
+
+  KEYCLOAK_ISSUER_URI: "https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm"
+  KEYCLOAK_JWK_SET_URI: "https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm/protocol/openid-connect/certs"
+
+
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 

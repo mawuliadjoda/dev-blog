@@ -1,6 +1,6 @@
-package com.esprit.repositories;
+package com.esprit.persistence.repositories;
 
-import com.esprit.entities.User;
+import com.esprit.persistence.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

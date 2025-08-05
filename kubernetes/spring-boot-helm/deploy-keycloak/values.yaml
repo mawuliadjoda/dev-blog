@@ -1,0 +1,31 @@
+auth:
+  adminUser: admin
+  adminPassword: adminpassword
+
+service:
+  type: ClusterIP #ClusterIP
+  ports:
+    http: 80
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  hosts:
+    - host: keycloak.localhost
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+
+extraEnvVars:
+  - name: KEYCLOAK_FRONTEND_URL
+    value: http://keycloak.localhost
+
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: pgrootpassword
+    username: bn_keycloak
+    password: keycloakpass
+    database: bitnami_keycloak

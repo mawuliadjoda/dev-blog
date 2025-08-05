@@ -1,8 +1,8 @@
 package com.esprit.controller;
 
 
-import com.esprit.entities.User;
-import com.esprit.repositories.UserRepository;
+import com.esprit.persistence.entities.User;
+import com.esprit.persistence.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
