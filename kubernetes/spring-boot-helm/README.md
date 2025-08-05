@@ -11,4 +11,7 @@ minikube tunnel
 
 
 https://dashboard.ngrok.com/domains
+https://dashboard.ngrok.com/get-started/your-authtoken
+ngrok config add-authtoken $YOUR_AUTHTOKEN
+
 ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
