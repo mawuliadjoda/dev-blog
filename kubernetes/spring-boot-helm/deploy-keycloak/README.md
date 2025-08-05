@@ -106,3 +106,6 @@ quay.io/keycloak/keycloak:23.0.6 start-dev \
 --https-certificate-file=/opt/keycloak/cert.pem \
 --https-certificate-key-file=/opt/keycloak/key.pem \
 --https-port=8443
+
+
+ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
