@@ -96,7 +96,7 @@ helm upgrade my-keycloak-second oci://registry-1.docker.io/bitnamicharts/keycloa
 mkdir certs
 openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes -subj "/CN=localhost"
 
-
+cd certs/
 docker run -p 8443:8443 \
 -e KEYCLOAK_ADMIN=admin \
 -e KEYCLOAK_ADMIN_PASSWORD=admin \
