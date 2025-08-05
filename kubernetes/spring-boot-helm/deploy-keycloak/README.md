@@ -108,6 +108,8 @@ quay.io/keycloak/keycloak:23.0.6 start-dev \
 --https-port=8443
 
 
+# ngrok
+https://dashboard.ngrok.com/domains
 ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
 
 

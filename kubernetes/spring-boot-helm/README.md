@@ -10,4 +10,5 @@ minikube dashboard
 minikube tunnel
 
 
+https://dashboard.ngrok.com/domains
 ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
