@@ -4,11 +4,11 @@ helm repo update
 helm install pgadmin runix/pgadmin4 -f pgadmin-values.yaml
 
 # minikube addons enable ingress ==> non on utilise traefik
-helm repo add traefik https://traefik.github.io/charts
-helm repo update
-
-helm install traefik traefik/traefik \
---namespace kube-system
+# helm repo add traefik https://traefik.github.io/charts
+# helm repo update
+# 
+# helm install traefik traefik/traefik \
+# --namespace kube-system
 
 
 
