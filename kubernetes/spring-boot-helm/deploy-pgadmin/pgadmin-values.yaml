@@ -8,10 +8,12 @@ service:
 
 ingress:
   enabled: true
-  ingressClassName: nginx
+  ingressClassName: traefik
   hosts:
     - host: pgadmin.localhost
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+
+  #annotations:
+  #  traefik.ingress.kubernetes.io/router.entrypoints: web

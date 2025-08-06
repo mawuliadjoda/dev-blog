@@ -1,0 +1,37 @@
+config:
+  clientID: oauth2-proxy-client
+  clientSecret: "sHlVDQLhii/iJTmD0AYelXww0jUrY3EHpKj6CeER15Y="
+  cookieSecret: "a-random-32-bytes-secret" # base64 (32 bytes)
+  provider: keycloak-oidc
+  oidcIssuerURL: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
+  scope: "openid profile email"
+  emailDomains:
+    - "*"
+  upstreams:
+    - "static://200"
+  httpAddress: "0.0.0.0:4180"
+
+extraArgs:
+  - --skip-provider-button=true
+  - --pass-access-token=true
+  - --pass-authorization-header=true
+  - --set-xauthrequest=true
+  - --cookie-secure=false  # à mettre à true si HTTPS activé
+  - --reverse-proxy=true
+  - --standard-logging=true
+  - --auth-logging=true
+  - --request-logging=true
+  - --whitelist-domain=.adjodadev.com
+  - --redirect-url=https://adjodadev.com/oauth2/callback
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/auth-type: "forward"
+    traefik.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.default.svc.cluster.local:4180/oauth2/auth"
+    traefik.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-Email,X-Auth-Request-User"
+  hosts:
+    - adjodadev.com
+  path: /oauth2
+  pathType: Prefix

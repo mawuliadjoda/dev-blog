@@ -75,10 +75,10 @@ contextPath: /springboothelm
 
 ingress:
   enabled: true
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  ingressClassName: traefik
+  #annotations:
+  #  traefik.ingress.kubernetes.io/router.entrypoints: web
+  #  traefik.ingress.kubernetes.io/router.middlewares: default-oauth2-auth@kubernetescrd
   hosts:
     - host: adjodadev.com
       paths:
