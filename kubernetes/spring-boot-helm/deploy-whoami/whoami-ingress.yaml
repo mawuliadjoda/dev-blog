@@ -1,0 +1,21 @@
+# whoami-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami
+  namespace: default
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: default-oauth2-auth@kubernetescrd,default-oauth2-errors-redirect@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: adjodadev.com
+      http:
+        paths:
+          - path: /whoami
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80

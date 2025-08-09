@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.13"
+  tag: "1.0.15"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -76,18 +76,34 @@ contextPath: /springboothelm
 ingress:
   enabled: true
   ingressClassName: traefik
-  #annotations:
-  #  traefik.ingress.kubernetes.io/router.entrypoints: web
-  #  traefik.ingress.kubernetes.io/router.middlewares: default-oauth2-auth@kubernetescrd
+  annotations:
+    # Si ton middleware est dans le namespace "default"
+    #traefik.ingress.kubernetes.io/router.middlewares: default-oauth2-auth@kubernetescrd,default-oauth2-errors-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: default-errors-redirect@kubernetescrd,default-forwardauth@kubernetescrd
   hosts:
     - host: adjodadev.com
       paths:
         - path: /springboothelm
-          pathType: ImplementationSpecific
+          pathType: Prefix
+  # optional:
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+
+
+
+
+
+
+
+  #hosts:
+  #  - host: adjodadev.com
+  #    paths:
+  #      - path: /springboothelm
+  #        pathType: ImplementationSpecific
+  #    actuatorPath: /springboothelm/actuator
+  #    servicePort: 80
+  #    middlewares:
+  #      - name: oauth2-auth-no-redirect
+  #tls: []
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

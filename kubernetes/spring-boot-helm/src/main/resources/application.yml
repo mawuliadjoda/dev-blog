@@ -44,6 +44,22 @@ spring:
 
 
 
+
+
 logging:
   level:
+    root: INFO
     org.springframework.security: DEBUG
+    org.springframework.boot.actuate.endpoint.web.servlet: DEBUG
+    org.springframework.web: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false  # <= option importante si tu veux bypass la sécurité sur /actuator

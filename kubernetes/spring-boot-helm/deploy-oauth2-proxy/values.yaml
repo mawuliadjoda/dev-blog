@@ -1,36 +1,42 @@
 config:
+  provider: oidc
+  oidcIssuerURL: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
   clientID: oauth2-proxy-client
   clientSecret: "sHlVDQLhii/iJTmD0AYelXww0jUrY3EHpKj6CeER15Y="
-  cookieSecret: "a-random-32-bytes-secret" # base64 (32 bytes)
-  provider: keycloak-oidc
-  oidcIssuerURL: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
+  cookieSecret: "YmglTnMTSm2XqD1qvNnKzR2ffhp2pr20ijylhK4MzYA="   # 32 bytes base64
   scope: "openid profile email"
-  emailDomains:
-    - "*"
+  emailDomains: ["*"]
   upstreams:
     - "static://200"
   httpAddress: "0.0.0.0:4180"
 
 extraArgs:
-  - --skip-provider-button=true
+  - --reverse-proxy=true
+  - --set-xauthrequest=true
   - --pass-access-token=true
   - --pass-authorization-header=true
-  - --set-xauthrequest=true
-  - --cookie-secure=false  # à mettre à true si HTTPS activé
-  - --reverse-proxy=true
+  - --set-authorization-header=true
+  - --skip-provider-button=true
+  - --cookie-samesite=lax
+  - --cookie-secure=false               # mets true quand tu passes en HTTPS
+  - --cookie-domain=.adjodadev.com
+  - --whitelist-domain=.adjodadev.com
+  - --redirect-url=http://adjodadev.com/oauth2/callback
+  # (garde aussi si tu veux la verbosité logs)
   - --standard-logging=true
   - --auth-logging=true
   - --request-logging=true
-  - --whitelist-domain=.adjodadev.com
+  - --oidc-issuer-url=https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
+
   - --redirect-url=https://adjodadev.com/oauth2/callback
+  - --oidc-issuer-url=https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
+  - --oidc-jwks-url=https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm/protocol/openid-connect/certs
+  - --login-url=https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm/protocol/openid-connect/auth
 
 ingress:
   enabled: true
-  className: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/auth-type: "forward"
-    traefik.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.default.svc.cluster.local:4180/oauth2/auth"
-    traefik.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-Email,X-Auth-Request-User"
+  ingressClassName: traefik
+  annotations: {}
   hosts:
     - adjodadev.com
   path: /oauth2
