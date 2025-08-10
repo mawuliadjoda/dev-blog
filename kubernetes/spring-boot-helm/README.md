@@ -30,3 +30,6 @@ ngrok service stop
 
 
 ![img.png](img.png)
+
+
+curl -i -H "Host: adjodadev.com" -H "Cookie: _oauth2_proxy=<ton_cookie>" http://127.0.0.1/springboothelm/api/v1/hello
