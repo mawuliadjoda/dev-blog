@@ -17,6 +17,8 @@ ngrok config add-authtoken $YOUR_AUTHTOKEN
 ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
 
 
+ngrok service stop
+
 
 # /etc/hosts
 
@@ -25,3 +27,6 @@ ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
 127.0.0.1 adjodadev.com
 127.0.0.1 whoami.localhost
 127.0.0.1 my-app.local
+
+
+![img.png](img.png)

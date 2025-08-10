@@ -46,7 +46,7 @@ spec:
       - X-Auth-Request-Email
       - X-Auth-Request-Preferred-Username
       - X-Auth-Request-Access-Token
-    authResponseHeadersRegex: ^X-Auth-Request-
+    authResponseHeadersRegex: ^X-Auth-Request-.*
 
 
 ---

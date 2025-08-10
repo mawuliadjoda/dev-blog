@@ -3,6 +3,7 @@ config:
   clientID: adjoda-webapp
   #clientSecret: sHlVDQLhii/iJTmD0AYelXww0jUrY3EHpKj6CeER15Y=
   cookieSecret: YmglTnMTSm2XqD1qvNnKzR2ffhp2pr20ijylhK4MzYA=
+  #scope: openid profile email roles
   configFile: |
     email_domains = ["*"]
     upstreams = ["static://200"]
@@ -27,7 +28,7 @@ extraArgs:
   set-authorization-header: true     # construire Authorization: Bearer <token>
   set-xauthrequest: true             # (optionnel) X-Auth-Request-* headers
   #scope: "openid email profile roles"
-  scope: "openid profile email"
+  scope: "openid email profile roles"
 
   #redirect-url: http://adjodadev.com/oauth2/callback
   #cookie-secure: "false"
