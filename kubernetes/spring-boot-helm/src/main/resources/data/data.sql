@@ -10,6 +10,44 @@ INSERT INTO users (name, lastname) VALUES ('Bob', 'Smith');
 
 
 
+SET search_path TO mon_schema;
+
+-- TABLE des profils métiers
+CREATE TABLE profile (
+                         code VARCHAR PRIMARY KEY,
+                         label TEXT NOT NULL
+);
+
+-- TABLE des rôles techniques (ex: Keycloak)
+CREATE TABLE role (
+                      name VARCHAR PRIMARY KEY
+);
+
+-- TABLE des permissions (droits fins)
+CREATE TABLE permission (
+                            code VARCHAR PRIMARY KEY,
+                            description TEXT NOT NULL
+);
+
+-- ASSOCIATION profile <-> role
+CREATE TABLE profile_role (
+                              profile_code VARCHAR NOT NULL REFERENCES profile(code) ON DELETE CASCADE,
+                              role_name VARCHAR NOT NULL REFERENCES role(name) ON DELETE CASCADE,
+                              PRIMARY KEY (profile_code, role_name)
+);
+
+-- ASSOCIATION role <-> permission
+CREATE TABLE role_permission (
+                                 role_name VARCHAR NOT NULL REFERENCES role(name) ON DELETE CASCADE,
+                                 permission_code VARCHAR NOT NULL REFERENCES permission(code) ON DELETE CASCADE,
+                                 PRIMARY KEY (role_name, permission_code)
+);
+
+
+
+
+-- insert
+
 INSERT INTO permission (code, description) VALUES
                                                ('CAN_VIEW_CLIENTS', 'Voir les clients'),
                                                ('CAN_MODIFY_CLIENTS', 'Modifier les clients'),

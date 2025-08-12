@@ -1,0 +1,9 @@
+server:
+  servlet:
+    context-path: '/@project.artifactId@'
+  #port: 8081
+
+
+spring:
+  application:
+    name: '@project.artifactId@'
