@@ -44,6 +44,10 @@ spec:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
+          env:
+            - name: BROKER_HOST_AND_PORT
+              value: {{ .Values.env.BROKER_HOST_AND_PORT }}
+
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
