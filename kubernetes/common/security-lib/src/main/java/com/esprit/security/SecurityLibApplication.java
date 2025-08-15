@@ -1,13 +1,13 @@
-package com.esprit.order;
+package com.esprit.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.esprit"})
-public class OrderApplication {
+@SpringBootApplication
+public class SecurityLibApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderApplication.class, args);
+		SpringApplication.run(SecurityLibApplication.class, args);
 	}
 
 }
