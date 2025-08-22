@@ -1,0 +1,133 @@
+# =========================
+# ZOOKEEPER (Bitnami)
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: default
+  labels: { app: zookeeper }
+spec:
+  type: ClusterIP
+  ports:
+    - name: client
+      port: 2181
+      targetPort: 2181
+  selector: { app: zookeeper }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: default
+  labels: { app: zookeeper }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: zookeeper } }
+  template:
+    metadata: { labels: { app: zookeeper } }
+    spec:
+      containers:
+        - name: zookeeper
+          image: bitnami/zookeeper:3.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2181
+          env:
+            # 👉 Permettre les connexions sans auth (dev)
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+            - name: ZOO_PORT_NUMBER
+              value: "2181"
+          readinessProbe:
+            tcpSocket: { port: 2181 }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket: { port: 2181 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: zk-data
+              mountPath: /bitnami/zookeeper
+      volumes:
+        - name: zk-data
+          emptyDir: {}
+
+# =========================
+# KAFKA (Bitnami, ZK mode)
+# =========================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: default
+  labels: { app: kafka }
+spec:
+  type: ClusterIP
+  ports:
+    - name: plaintext
+      port: 9092
+      targetPort: 9092
+  selector: { app: kafka }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+  namespace: default
+  labels: { app: kafka }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: kafka } }
+  template:
+    metadata: { labels: { app: kafka } }
+    spec:
+      containers:
+        - name: kafka
+          image: bitnami/kafka:3.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9092
+          env:
+            # ⚠️ AUCUNE variable KRaft ici
+            # Listeners internes
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "PLAINTEXT:PLAINTEXT"
+            - name: KAFKA_CFG_LISTENERS
+              value: "PLAINTEXT://:9092"
+            # Annonce le DNS du Service Kafka
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://kafka.default.svc.cluster.local:9092"
+            - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+              value: "PLAINTEXT"
+
+            # Connexion ZooKeeper
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+              value: "zookeeper.default.svc.cluster.local:2181"
+
+            # Confort dev (1 broker)
+            - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+              value: "true"
+            - name: KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR
+              value: "1"
+
+          readinessProbe:
+            tcpSocket: { port: 9092 }
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket: { port: 9092 }
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          volumeMounts:
+            - name: kafka-data
+              mountPath: /bitnami/kafka
+      volumes:
+        - name: kafka-data
+          emptyDir: {}

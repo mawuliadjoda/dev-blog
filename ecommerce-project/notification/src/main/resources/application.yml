@@ -1,0 +1,22 @@
+server:
+  servlet:
+    context-path: '/@project.artifactId@'
+  #port: 8081
+
+
+spring:
+  application:
+    name: '@project.artifactId@'
+
+  cloud:
+    stream:
+      bindings:
+        consumeMessage-in-0:
+          destination: demo-topic
+        consumeProductMessage-in-0:
+          destination: product-topic
+      kafka:
+        binder:
+          brokers: ${BROKER_HOST_AND_PORT}
+    function:
+      definition: consumeMessage; consumeProductMessage

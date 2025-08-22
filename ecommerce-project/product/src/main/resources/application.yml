@@ -1,0 +1,47 @@
+server:
+  servlet:
+    context-path: '/@project.artifactId@'
+  #port: 8081
+
+
+spring:
+  application:
+    name: '@project.artifactId@'
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+    properties:
+      hibernate:
+      #generate_statistics: true
+      #format_sql: true
+      #use_sql_comments: true
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test_db
+    username: root
+    password: root123
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI}
+
+  cloud:
+    stream:
+      bindings:
+        produceMessage-out-0:
+          destination: demo-topic
+        produceProductMessage-out-0:
+          destination: product-topic
+      kafka:
+        binder:
+          brokers: ${BROKER_HOST_AND_PORT}
+    function:
+      definition: consumeMessage; #produceMessage
