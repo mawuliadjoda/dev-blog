@@ -1,7 +1,8 @@
 
 package com.esprit.product.adapters.inbound.rest;
 
-import com.esprit.product.adapters.inbound.rest.dto.ProductDto;
+import com.esprit.product.adapters.inbound.rest.data.request.ProductCreateRequest;
+import com.esprit.product.adapters.inbound.rest.mapper.ProductRestRequestMapper;
 import com.esprit.product.domain.model.Product;
 import com.esprit.product.domain.service.ProductUseCases;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductUseCases useCases;
+    private final ProductRestRequestMapper  productRestRequestMapper;
 
     @GetMapping
     public List<Product> all() {
@@ -24,13 +26,20 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product create(@Valid @RequestBody ProductDto d) {
-        return useCases.create(Product.builder().sku(d.sku).name(d.name).price(d.price).quantity(d.quantity).build());
+    public Product create(@Valid @RequestBody ProductCreateRequest d) {
+        return useCases.create(productRestRequestMapper.toDomain(d));
+        // return useCases.create(Product.builder().sku(d.sku).name(d.name).price(d.price).quantity(d.quantity).build());
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable String id, @Valid @RequestBody ProductDto d) {
-        return useCases.update(id, Product.builder().sku(d.sku).name(d.name).price(d.price).quantity(d.quantity).build());
+    public Product update(@PathVariable String id, @Valid @RequestBody ProductCreateRequest d) {
+        return useCases.update(id, productRestRequestMapper.toDomain(d));
+        // return useCases.update(id, Product.builder().sku(d.sku).name(d.name).price(d.price).quantity(d.quantity).build());
+    }
+
+    @GetMapping("/{id}")
+    public Product findById(@PathVariable String id) {
+        return useCases.findById(id);
     }
 
     @PatchMapping("/{id}/inventory")

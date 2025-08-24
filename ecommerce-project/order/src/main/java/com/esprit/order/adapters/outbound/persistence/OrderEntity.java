@@ -24,5 +24,5 @@ public class OrderEntity {
     private String status;
     private double totalAmount;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<OrderItemEntity> items = new ArrayList<>();
+    private List<OrderItemEntity> items;
 }

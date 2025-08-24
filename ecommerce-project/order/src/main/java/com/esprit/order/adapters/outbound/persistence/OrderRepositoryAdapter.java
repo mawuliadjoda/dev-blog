@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class OrderRepositoryAdapter implements OrderRepositoryPort {
-    private final SpringDataOrderRepository jpa;
+    private final OrderRepository jpa;
 
     private static CustomerOrder toDomain(OrderEntity e) {
         var o = CustomerOrder.builder().id(e.getId()).customerEmail(e.getCustomerEmail()).status(OrderStatus.valueOf(e.getStatus())).totalAmount(e.getTotalAmount()).build();

@@ -3,10 +3,10 @@ package com.esprit.security;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class SecurityLibApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 

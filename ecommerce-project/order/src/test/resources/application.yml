@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: test
+
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://test/realms/adjoda-dev-realm
+          jwk-set-uri: http://test/realms/adjoda-dev-realm/protocol/openid-connect/certs
+
+
+  cloud:
+    stream:
+      bindings:
+        produceMessage-out-0:
+          destination: demo-topic
+        produceProductMessage-out-0:
+          destination: product-topic
+      kafka:
+        binder:
+          brokers: localhost:9092

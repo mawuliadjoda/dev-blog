@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.esprit</groupId>
-    <artifactId>common-module</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
@@ -20,6 +20,7 @@
         <spring-boot.version>3.5.4</spring-boot.version>
         <!-- Version partagée pour nos modules -->
         <common.version>${project.version}</common.version>
+        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     </properties>
     <dependencies>
 
@@ -27,7 +28,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -36,9 +36,17 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
     </dependencies>
 
     <!--
@@ -56,8 +64,9 @@
     -->
 
     <modules>
-        <module>security-lib</module>
-        <module>exception-lib</module>
+        <module>product</module>
+        <module>order</module>
+        <module>notification</module>
     </modules>
 
 </project>
