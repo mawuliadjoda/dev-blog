@@ -19,7 +19,16 @@ http://adjodadev.com/product/api/v1/products
 
 
 
-
+lefort@GT13Pro:/mnt/d/dev/git/dev-blog/ecommerce-project/helm$ helm upgrade product ./product/
+Release "product" has been upgraded. Happy Helming!
+NAME: product
+LAST DEPLOYED: Sun Aug 24 16:31:01 2025
+NAMESPACE: default
+STATUS: deployed
+REVISION: 5
+NOTES:
+1. Get the application URL by running these commands:
+   http://adjodadev.com/product
 
 curl -i -X POST -H "Host: adjodadev.com" -H "Content-Type: application/json" -H "Cookie: _oauth2_proxy=<ton_cookie>" --data '{"message":"Hi","sender":"adjoda"}' http://adjodadev.com/product/send
 
