@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: forwardauth
+  name: forwardauth-no-redirect
   namespace: default
 spec:
   forwardAuth:
@@ -15,6 +15,17 @@ spec:
       - X-Auth-Request-Access-Token
     authResponseHeadersRegex: ^X-Auth-Request-.*
 
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: forwardauth-redirect
+  namespace: default
+spec:
+  forwardAuth:
+    address: http://oauth2-proxy.default.svc.cluster.local/oauth2/
+    trustForwardHeader: true
 
 ---
 # middleware-errors-401.yaml
@@ -28,6 +39,22 @@ spec:
     status:
       - "401"
     query: /oauth2/start?rd={url}
+    service:
+      name: oauth2-proxy
+      port: 80
+
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect
+  namespace: default
+spec:
+  errors:
+    status:
+      - "401"
+    query: /oauth2/sign_in?rd={url}   # <— au lieu de /oauth2/start...
     service:
       name: oauth2-proxy
       port: 80
