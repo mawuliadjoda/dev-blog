@@ -24,12 +24,12 @@ public class OrderRepositoryAdapter implements OrderRepositoryPort {
     }
 
     private static OrderItem toDomain(OrderItemEntity e) {
-        return OrderItem.builder().productId(e.getProductId()).sku(e.getSku()).quantity(e.getQuantity()).price(e.getPrice()).build();
+        return OrderItem.builder().productId(e.getProductId()).quantity(e.getQuantity()).price(e.getPrice()).build();
     }
 
     private static OrderEntity toEntity(CustomerOrder o) {
         var e = OrderEntity.builder().id(o.getId()).customerEmail(o.getCustomerEmail()).status(o.getStatus().name()).totalAmount(o.getTotalAmount()).build();
-        e.setItems(o.getItems().stream().map(i -> OrderItemEntity.builder().order(e).productId(i.getProductId()).sku(i.getSku()).quantity(i.getQuantity()).price(i.getPrice()).build()).collect(Collectors.toList()));
+        e.setItems(o.getItems().stream().map(i -> OrderItemEntity.builder().order(e).productId(i.getProductId()).quantity(i.getQuantity()).price(i.getPrice()).build()).collect(Collectors.toList()));
         return e;
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@CrossOrigin(value = "*")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductUseCases useCases;
@@ -40,6 +41,11 @@ public class ProductController {
     @GetMapping("/{id}")
     public Product findById(@PathVariable String id) {
         return useCases.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        useCases.delete(id);
     }
 
     @PatchMapping("/{id}/inventory")

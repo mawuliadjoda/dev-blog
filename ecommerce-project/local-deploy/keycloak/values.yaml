@@ -10,20 +10,21 @@ service:
 ingress:
   enabled: true
   ingressClassName: traefik
-  hosts:
-    - host: keycloak.localhost
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-
+  hostname: keycloak.localhost     # <— au lieu de hosts[0].host
+  path: /
+  pathType: Prefix
+  tls: false                       # mets true + secret si tu veux du HTTPS
 
 extraEnvVars:
-  - name: KEYCLOAK_FRONTEND_URL
-    value: http://keycloak.localhost
+  - name: KC_HOSTNAME              # recommandé sur Keycloak Quarkus récent
+    value: keycloak.localhost
+  - name: KC_HOSTNAME_STRICT
+    value: "true"
 
 postgresql:
   enabled: true
+  image:
+    tag: "14"   # ou une 14.x précise (ex: 14.12.0-debian-12-rXX)
   auth:
     postgresPassword: pgrootpassword
     username: bn_keycloak

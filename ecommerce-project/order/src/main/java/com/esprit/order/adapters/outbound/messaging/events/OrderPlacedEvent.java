@@ -24,7 +24,6 @@ public class OrderPlacedEvent {
     @Builder
     public static class OrderedItem {
         private String productId;
-        private String sku;
         private int quantity;
         private double price;
     }

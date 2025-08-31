@@ -12,7 +12,9 @@ public interface ProductRepositoryPort {
 
     Optional<Product> findById(String id);
 
-    Optional<Product> findBySku(String sku);
+    Optional<Product> findByName(String name);
 
     List<Product> findAll();
+
+    void deleteById(String id);
 }

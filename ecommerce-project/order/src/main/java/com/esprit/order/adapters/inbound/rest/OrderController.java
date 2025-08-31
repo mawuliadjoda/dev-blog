@@ -23,6 +23,6 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerOrder place(@Valid @RequestBody PlaceOrderRequest req) {
         return useCases.place(req.getCustomerEmail(),
-                req.getItems().stream().map(i -> OrderItem.builder().productId(i.getProductId()).sku(i.getSku()).quantity(i.getQuantity()).price(i.getPrice()).build()).collect(Collectors.toList()));
+                req.getItems().stream().map(i -> OrderItem.builder().productId(i.getProductId()).quantity(i.getQuantity()).price(i.getPrice()).build()).collect(Collectors.toList()));
     }
 }

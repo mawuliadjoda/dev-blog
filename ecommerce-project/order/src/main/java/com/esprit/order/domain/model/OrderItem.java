@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 public class OrderItem {
     private String productId;
-    private String sku;
     private int quantity;
     private double price;
 }

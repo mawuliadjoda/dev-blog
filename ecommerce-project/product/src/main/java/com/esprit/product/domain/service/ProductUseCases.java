@@ -45,4 +45,8 @@ public class ProductUseCases {
     public List<Product> all() {
         return repo.findAll();
     }
+
+    public void delete(String id) {
+        repo.deleteById(id);
+    }
 }

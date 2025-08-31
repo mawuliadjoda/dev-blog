@@ -17,9 +17,6 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, unique = true)
-    private String sku;
-
     @Column(nullable = false)
     private String name;
 

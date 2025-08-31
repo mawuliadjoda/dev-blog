@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProductCreateRequest {
     public String id;
-    @NotBlank
-    public String sku;
+
     @NotBlank
     public String name;
     @PositiveOrZero

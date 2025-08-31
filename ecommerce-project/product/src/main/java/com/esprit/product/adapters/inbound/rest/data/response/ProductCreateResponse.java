@@ -16,9 +16,6 @@ public class ProductCreateResponse {
     public String id;
 
     @NotBlank
-    public String sku;
-
-    @NotBlank
     public String name;
 
     @PositiveOrZero

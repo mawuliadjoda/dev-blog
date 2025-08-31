@@ -36,8 +36,8 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
         // return productRepository.findById(id).map(ProductRepositoryAdapter::toDomain);
     }
 
-    public Optional<Product> findBySku(String sku) {
-        return productRepository.findBySku(sku).map(productPersistenceMapper::toDomain);
+    public Optional<Product> findByName(String name) {
+        return productRepository.findByName(name).map(productPersistenceMapper::toDomain);
         //return productRepository.findBySku(sku).map(ProductRepositoryAdapter::toDomain);
     }
 
@@ -45,5 +45,10 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
         return productPersistenceMapper.toDomains(productRepository.findAll());
         // return productRepository.findAll().stream().map(productPersistenceMapper::toDomain).collect(Collectors.toList());
         // return productRepository.findAll().stream().map(ProductRepositoryAdapter::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(String id) {
+        productRepository.deleteById(id);
     }
 }

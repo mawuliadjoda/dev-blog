@@ -19,7 +19,6 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id")
     private OrderEntity order;
     private String productId;
-    private String sku;
     private int quantity;
     private double price;
 }

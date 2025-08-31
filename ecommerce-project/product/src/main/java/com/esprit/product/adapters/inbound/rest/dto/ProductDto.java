@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
     public String id;
     @NotBlank
-    public String sku;
-    @NotBlank
     public String name;
     @PositiveOrZero
     public double price;

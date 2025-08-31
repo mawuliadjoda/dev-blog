@@ -27,8 +27,6 @@ public class PlaceOrderRequest {
     public static class Item {
         @NotBlank
         private String productId;
-        @NotBlank
-        private String sku;
         @Positive
         private int quantity;
         @PositiveOrZero

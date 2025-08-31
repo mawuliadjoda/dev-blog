@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProductUpdatedEvent {
     public String productId;
-    public String sku;
     public String name;
     public int availableQuantity;
     public double price;
