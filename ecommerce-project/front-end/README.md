@@ -1,5 +1,8 @@
 # React + TypeScript + Vite
 
+https://tailwindcss.com/docs/installation/using-vite
+https://www.material-tailwind.com/docs/html/table
+
 https://medium.com/geekculture/how-to-install-node-js-by-nvm-61addf4ab1ba
 
 docker build . -t "adjodamawuli/adjodadev-frontend:v1.0"
