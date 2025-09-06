@@ -81,6 +81,7 @@
 		</resources>
 		-->
 
+		<!-- 1) Exclure les changelogs du JAR principal -->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -104,6 +105,7 @@
 			</plugin>
 
 
+			<!-- 2) Copier les changelogs vers un répertoire tampon -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.3.1</version>
@@ -127,6 +129,7 @@
 				</executions>
 			</plugin>
 
+			<!-- 3) Attacher un JAR classifier=liquibase avec seulement les changelogs -->
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version>

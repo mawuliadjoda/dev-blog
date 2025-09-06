@@ -1,0 +1,1 @@
+# @See Pom plugins declaration for mor detail
