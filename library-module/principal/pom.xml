@@ -95,15 +95,11 @@
 			</plugin>
 
 
-
-
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.6.1</version>
 				<executions>
-					<!-- 1) On décompresse dans un répertoire tampon -->
 					<execution>
 						<id>unpack-rbac-temp</id>
 						<phase>process-resources</phase>
@@ -115,7 +111,6 @@
 									<artifactId>library</artifactId>
 									<version>${common.version}</version>
 									<type>jar</type>
-									<!-- couvre les deux cas: racine et BOOT-INF/classes -->
 									<includes>
 										**/db.changelog-master.yml,
 										**/db/changelog/db.changelog-master.yml,
@@ -123,9 +118,6 @@
 										**/db/changelog/rbac/table/**
 									</includes>
 									<overWrite>true</overWrite>
-									<!--
-									<outputDirectory>${basedir}/_rbac_tmp</outputDirectory>
-									-->
 									<outputDirectory>${basedir}/src/main/resources</outputDirectory>
 								</artifactItem>
 							</artifactItems>

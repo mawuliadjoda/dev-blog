@@ -3,11 +3,3 @@ databaseChangeLog:
       file: db/changelog/table/table.changelog-master.yml
   - include:
       file: db/changelog/rbac/db.changelog-master.yml
-
-  #- include:
-  #    file: db/changelog/rbac/db/changelog/rbac/db.changelog-master.yml
-  #    context: remote
-
-      #file: changelog/rbac/db/changelog/rbac/db.changelog-master.yml
-      #relativeToChangelogFile: true
-      #context: remote
