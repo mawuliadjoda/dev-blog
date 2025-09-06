@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/rbac/table/create-table.yml
+      #context: local
+
+  #- include:
+  #    file: db/changelog/rbac/db/changelog/rbac/table/create-table.yml
+  #    context: remote
+      #file: table/create-table.yml
+      #relativeToChangelogFile: true

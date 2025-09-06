@@ -4,7 +4,7 @@ spring:
   application:
     name: "principal"
   #profiles:
-  #  active: "remote"
+  #  active: "local"
 
   jpa:
     hibernate:
@@ -25,7 +25,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    contexts: remote
+    contexts: local
 
 #library:
 #  liquibase:

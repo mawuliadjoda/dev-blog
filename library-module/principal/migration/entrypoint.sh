@@ -13,4 +13,6 @@ export LIQUIBASE_DEFAULT_SCHEMA_NAME="public"
 export LIQUIBASE_COMMAND_CHANGELOG_FILE="db/changelog/db.changelog-master.yml"
 #export LIQUIBASE_COMMAND_CHANGELOG_FILE="db/changelog/rbac/db/changelog/rbac/db.changelog-master.yml"
 
+export LIQUIBASE_CONTEXTS="remote"
+
 liquibase update
