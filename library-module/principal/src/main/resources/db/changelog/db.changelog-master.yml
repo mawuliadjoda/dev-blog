@@ -1,3 +1,7 @@
 databaseChangeLog:
   - include:
       file: db/changelog/table/table.changelog-master.yml
+
+  - include:
+      file: db/changelog/rbac/db/changelog/rbac/db.changelog-master.yml
+      #context: remote
