@@ -111,6 +111,7 @@
 									<artifactId>library</artifactId>
 									<version>${common.version}</version>
 									<type>jar</type>
+									<classifier>liquibase</classifier>
 									<includes>
 										**/db.changelog-master.yml,
 										**/db/changelog/db.changelog-master.yml,
@@ -124,8 +125,39 @@
 							</artifactItems>
 						</configuration>
 					</execution>
+
+
+					<execution>
+						<id>unpack-rbac-temp2</id>
+						<phase>process-resources</phase>
+						<goals><goal>unpack</goal></goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.esprit</groupId>
+									<artifactId>library</artifactId>
+									<version>${common.version}</version>
+									<type>jar</type>
+									<classifier>liquibase</classifier>
+									<includes>
+										**/db.changelog-master.yml,
+										**/db/changelog/db.changelog-master.yml,
+										**/db.changelog.rbac/table/**,
+										**/db/changelog/rbac/table/**,
+										**/db/changelog/rbac/data/**
+									</includes>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
+
+
+
 
 
 		</plugins>

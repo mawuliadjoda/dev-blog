@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class PrincipalApplication {
 
 	public static void main(String[] args) {
-		System.setProperty("liquibase.duplicateFileMode", "WARN"); // <-- avant
 		SpringApplication.run(PrincipalApplication.class, args);
 	}
 

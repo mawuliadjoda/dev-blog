@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.gitattributes
+migration/entrypoint.sh text eol=lf

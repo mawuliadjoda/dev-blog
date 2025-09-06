@@ -69,14 +69,24 @@
 
 
 	<build>
+		<!--
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>**/*</include>
-					<!-- Exemple pour inclure spécifiquement un fichier Liquibase -->
 					<include>db/changelog/**/*</include>
 				</includes>
+			</resource>
+		</resources>
+		-->
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>db/changelog/**</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<plugins>
@@ -92,6 +102,48 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>copy-liquibase-resources</id>
+						<phase>process-resources</phase>
+						<goals><goal>copy-resources</goal></goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/liquibase-resources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<includes>
+										<include>db/changelog/**</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-liquibase-jar</id>
+						<phase>package</phase>
+						<goals><goal>jar</goal></goals>
+						<configuration>
+							<!-- garde la même arbo: db/changelog/** -->
+							<classesDirectory>${project.build.directory}/liquibase-resources</classesDirectory>
+							<classifier>liquibase</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
