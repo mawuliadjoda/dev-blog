@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-insert-person-sql-local
+      author: mawuli.adjoda
+      context: local
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO person (first_name, last_name, email, birth_date)
+              VALUES ('John', 'Doe', 'john.local@example.com', DATE '1990-05-10');
+      rollback: |
+        DELETE FROM person WHERE email = 'john.local@example.com';
+
+  - changeSet:
+      id: 3-insert-person-sql-remote
+      author: mawuli.adjoda
+      context: remote
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO person (first_name, last_name, email, birth_date)
+              VALUES ('Jane', 'Smith', 'jane.remote@example.com', DATE '1992-08-21');
+      rollback: |
+        DELETE FROM person WHERE email = 'jane.remote@example.com';

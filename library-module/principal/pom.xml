@@ -115,7 +115,8 @@
 										**/db.changelog-master.yml,
 										**/db/changelog/db.changelog-master.yml,
 										**/db.changelog.rbac/table/**,
-										**/db/changelog/rbac/table/**
+										**/db/changelog/rbac/table/**,
+										**/db/changelog/rbac/data/**
 									</includes>
 									<overWrite>true</overWrite>
 									<outputDirectory>${basedir}/src/main/resources</outputDirectory>

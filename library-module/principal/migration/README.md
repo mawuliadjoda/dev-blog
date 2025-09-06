@@ -13,4 +13,5 @@ docker run --rm adjodamawuli/my_migration:1.0.0
      -e LIQUIBASE_COMMAND_URL=jdbc:postgresql://postgres:5432/person \
      -e LIQUIBASE_COMMAND_USERNAME=root \
      -e LIQUIBASE_COMMAND_PASSWORD=root123 \
+     -e LIQUIBASE_CONTEXTS=remote
      adjodamawuli/my_migration:1.0.0

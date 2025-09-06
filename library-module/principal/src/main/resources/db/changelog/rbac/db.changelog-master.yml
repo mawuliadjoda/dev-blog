@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/rbac/table/table.changelog-master.yml
+  - include:
+      file: db/changelog/rbac/data/data.changelog-master.yml

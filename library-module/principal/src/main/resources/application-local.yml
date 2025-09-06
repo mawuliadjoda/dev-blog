@@ -27,6 +27,7 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.yml
     contexts: local
 
+
 #library:
 #  liquibase:
 #    changelog-path: classpath:/db/changelog/db.changelog-master.yml

@@ -31,7 +31,7 @@ public class PersonPopulator implements CommandLineRunner {
                 .firstName("Mawuli")
                 .createdAt(LocalDateTime.now())
                 .build();
-        repository.save(person);
+        // repository.save(person);
 
         log.info("existsByEmail: " + repository.existsByEmail(person.getEmail()));
     }
