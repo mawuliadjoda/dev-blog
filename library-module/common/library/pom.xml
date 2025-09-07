@@ -69,18 +69,6 @@
 
 
 	<build>
-		<!--
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*</include>
-					<include>db/changelog/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-		-->
-
 		<!-- 1) Exclure les changelogs du JAR principal -->
 		<resources>
 			<resource>
@@ -90,6 +78,7 @@
 				</excludes>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -105,15 +94,17 @@
 			</plugin>
 
 
-			<!-- 2) Copier les changelogs vers un répertoire tampon -->
+			<!-- 2) Copier db/changelog/** vers target/liquibase-resources -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
+				<!-- version gérée par spring-boot-starter-parent ; mets 3.3.1 si tu n’as pas ce parent -->
 				<executions>
 					<execution>
 						<id>copy-liquibase-resources</id>
 						<phase>process-resources</phase>
-						<goals><goal>copy-resources</goal></goals>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
 						<configuration>
 							<outputDirectory>${project.build.directory}/liquibase-resources</outputDirectory>
 							<resources>
@@ -122,6 +113,8 @@
 									<includes>
 										<include>db/changelog/**</include>
 									</includes>
+									<!-- Pas de filtering pour éviter toute altération -->
+									<filtering>false</filtering>
 								</resource>
 							</resources>
 						</configuration>
@@ -129,18 +122,23 @@
 				</executions>
 			</plugin>
 
-			<!-- 3) Attacher un JAR classifier=liquibase avec seulement les changelogs -->
+			<!-- 3) Construire un JAR attaché avec uniquement les changelogs -->
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
+				<!-- version gérée par spring-boot-starter-parent ; mets 3.4.1 si besoin -->
 				<executions>
 					<execution>
 						<id>attach-liquibase-jar</id>
 						<phase>package</phase>
-						<goals><goal>jar</goal></goals>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 						<configuration>
-							<!-- garde la même arbo: db/changelog/** -->
+							<!-- On fabrique l’archive à partir du répertoire tampon -->
 							<classesDirectory>${project.build.directory}/liquibase-resources</classesDirectory>
+							<includes>
+								<include>db/changelog/**</include>
+							</includes>
 							<classifier>liquibase</classifier>
 						</configuration>
 					</execution>

@@ -113,11 +113,14 @@
 									<type>jar</type>
 									<classifier>liquibase</classifier>
 									<includes>
+										**/db/changelog/**
+										<!--
 										**/db.changelog-master.yml,
 										**/db/changelog/db.changelog-master.yml,
 										**/db.changelog.rbac/table/**,
 										**/db/changelog/rbac/table/**,
 										**/db/changelog/rbac/data/**
+										-->
 									</includes>
 									<overWrite>true</overWrite>
 									<outputDirectory>${basedir}/src/main/resources</outputDirectory>
@@ -140,11 +143,14 @@
 									<type>jar</type>
 									<classifier>liquibase</classifier>
 									<includes>
+										**/db/changelog/**
+										<!--
 										**/db.changelog-master.yml,
 										**/db/changelog/db.changelog-master.yml,
 										**/db.changelog.rbac/table/**,
 										**/db/changelog/rbac/table/**,
 										**/db/changelog/rbac/data/**
+										-->
 									</includes>
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.outputDirectory}</outputDirectory>
