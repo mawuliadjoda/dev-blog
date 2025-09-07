@@ -97,7 +97,6 @@
 			<!-- 2) Copier db/changelog/** vers target/liquibase-resources -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<!-- version gérée par spring-boot-starter-parent ; mets 3.3.1 si tu n’as pas ce parent -->
 				<executions>
 					<execution>
 						<id>copy-liquibase-resources</id>
@@ -125,7 +124,6 @@
 			<!-- 3) Construire un JAR attaché avec uniquement les changelogs -->
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<!-- version gérée par spring-boot-starter-parent ; mets 3.4.1 si besoin -->
 				<executions>
 					<execution>
 						<id>attach-liquibase-jar</id>
