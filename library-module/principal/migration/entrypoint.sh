@@ -10,4 +10,5 @@ export LIQUIBASE_COMMAND_CONTEXTS="remote"
 
 # préciser le search-path évite les surprises de chemin
 #liquibase --search-path=/db update
+
 liquibase update
