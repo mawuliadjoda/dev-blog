@@ -60,7 +60,7 @@ service:
 
 env:
   BROKER_HOST_AND_PORT: kafka:9092
-  SPRING_DATASOURCE_URL: jdbc:postgresql://my-postgres-postgresql.default.svc.cluster.local:5432/product
+  SPRING_DATASOURCE_URL: jdbc:postgresql://my-postgresql.default.svc.cluster.local:5432/product
   SPRING_DATASOURCE_USERNAME: root
   SPRING_DATASOURCE_PASSWORD: password
   KEYCLOAK_ISSUER_URI: "https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm"

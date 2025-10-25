@@ -1,8 +1,8 @@
-helm create product
+helm create product   => attention à faire juste une première fois
 
 helm install product ./product/
 
-# Go to http://adjodadev.com/product/actuator to get cookie
+# Go to http://adjodadev.com/product/actuator to get cookie (puisqu'on utilise maintenant le middleware 'default-forwardauth-no-redirect' il faut passer par le frontend pour une première connexion au backend)
 
 http://adjodadev.com/product/api/v1/ping
 

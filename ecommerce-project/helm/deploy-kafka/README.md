@@ -1,6 +1,7 @@
 # I finally use bitnami/kafka 
   kubectl apply -f kafka-bitnami.yaml
-
+  
+  => pour désinstaller : kubectl delete -f kafka-bitnami.yaml
 # Dans le pod kafka
 
 kafka-topics.sh --create --topic demo-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
