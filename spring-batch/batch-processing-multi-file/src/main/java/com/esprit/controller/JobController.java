@@ -23,7 +23,8 @@ public class JobController {
     private final JobLauncher jobLauncher;
     // private final Job importStagingJob;
     // private final Job importDynamicStagingJob;
-    private final Job importToStaging;
+    // private final Job importToStaging;
+    private final Job importToStagingParalelStep;
 
 
 
@@ -32,7 +33,7 @@ public class JobController {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
         try {
-            jobLauncher.run(importToStaging, jobParameters);
+            jobLauncher.run(importToStagingParalelStep, jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
                  JobParametersInvalidException e) {
             log.error(e.getMessage());

@@ -3,24 +3,27 @@ package com.esprit.config;
 import com.esprit.domain.model.StgCustomer;
 import com.esprit.domain.model.StgOrder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.job.builder.SimpleJobBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -30,7 +33,7 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class DynamicTypedStagingJobConfig {
+public class DynamicTypedStagingJobConfigParalelStep {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
@@ -41,10 +44,11 @@ public class DynamicTypedStagingJobConfig {
 
     /**
      * ImportDef<T>
-     * @param name    nom logique (utilisé dans le nom du step : "import-" + name)
-     * @param file    chemin du CSV (avec header)
-     * @param columns noms des colonnes dans le CSV (doivent matcher le FieldSetMapper)
-     * @param mapper  fonction de mapping CSV -> DTO typé
+     *
+     * @param name      nom logique (utilisé dans le nom du step : "import-" + name)
+     * @param file      chemin du CSV (avec header)
+     * @param columns   noms des colonnes dans le CSV (doivent matcher le FieldSetMapper)
+     * @param mapper    fonction de mapping CSV -> DTO typé
      * @param upsertSql SQL d’upsert vers la table staging (params = getters du DTO)
      */
     public record ImportDef<T>(
@@ -53,12 +57,15 @@ public class DynamicTypedStagingJobConfig {
             String[] columns,
             FieldSetMapperFn<T> mapper,
             String upsertSql
-    ) {}
+    ) {
+    }
 
-    /** Functional interface simple pour éviter de dépendre de l’API interne */
+    /**
+     * Functional interface simple pour éviter de dépendre de l’API interne
+     */
     @FunctionalInterface
     public interface FieldSetMapperFn<T> {
-        T map(org.springframework.batch.item.file.transform.FieldSet fs) throws Exception;
+        T map(FieldSet fs) throws Exception;
     }
 
     /* ---------- 2) Catalogue d’imports (à externaliser YAML/DB en prod) ---------- */
@@ -69,7 +76,7 @@ public class DynamicTypedStagingJobConfig {
         ImportDef<StgCustomer> customers = new ImportDef<>(
                 "customers",
                 "src/main/resources/customers.csv",
-                new String[]{"id","firstName","lastName","email","gender","contactNo","country","dob"},
+                new String[]{"id", "firstName", "lastName", "email", "gender", "contactNo", "country", "dob"},
                 fs -> {
                     StgCustomer c = new StgCustomer();
                     c.setId(fs.readLong("id"));
@@ -83,23 +90,23 @@ public class DynamicTypedStagingJobConfig {
                     return c;
                 },
                 """
-                INSERT INTO stg_customer (customer_id, first_name, last_name, email, gender, contact, country, dob)
-                VALUES (:id, :firstName, :lastName, :email, :gender, :contactNo, :country, :dob)
-                ON CONFLICT (customer_id) DO UPDATE SET
-                  first_name = EXCLUDED.first_name,
-                  last_name  = EXCLUDED.last_name,
-                  email      = EXCLUDED.email,
-                  gender     = EXCLUDED.gender,
-                  contact    = EXCLUDED.contact,
-                  country    = EXCLUDED.country,
-                  dob        = EXCLUDED.dob
-                """
+                        INSERT INTO stg_customer (customer_id, first_name, last_name, email, gender, contact, country, dob)
+                        VALUES (:id, :firstName, :lastName, :email, :gender, :contactNo, :country, :dob)
+                        ON CONFLICT (customer_id) DO UPDATE SET
+                          first_name = EXCLUDED.first_name,
+                          last_name  = EXCLUDED.last_name,
+                          email      = EXCLUDED.email,
+                          gender     = EXCLUDED.gender,
+                          contact    = EXCLUDED.contact,
+                          country    = EXCLUDED.country,
+                          dob        = EXCLUDED.dob
+                        """
         );
 
         ImportDef<StgOrder> orders = new ImportDef<>(
                 "orders",
                 "src/main/resources/orders.csv",
-                new String[]{"id","customerId","orderDate","amount","status"},
+                new String[]{"id", "customerId", "orderDate", "amount", "status"},
                 fs -> {
                     StgOrder o = new StgOrder();
                     o.setId(fs.readLong("id"));
@@ -110,14 +117,14 @@ public class DynamicTypedStagingJobConfig {
                     return o;
                 },
                 """
-                INSERT INTO stg_order (order_id, customer_id, order_date, amount, status)
-                VALUES (:id, :customerId, :orderDate, :amount, :status)
-                ON CONFLICT (order_id) DO UPDATE SET
-                  customer_id = EXCLUDED.customer_id,
-                  order_date  = EXCLUDED.order_date,
-                  amount      = EXCLUDED.amount,
-                  status      = EXCLUDED.status
-                """
+                        INSERT INTO stg_order (order_id, customer_id, order_date, amount, status)
+                        VALUES (:id, :customerId, :orderDate, :amount, :status)
+                        ON CONFLICT (order_id) DO UPDATE SET
+                          customer_id = EXCLUDED.customer_id,
+                          order_date  = EXCLUDED.order_date,
+                          amount      = EXCLUDED.amount,
+                          status      = EXCLUDED.status
+                        """
         );
 
         return List.of(customers, orders);
@@ -178,7 +185,7 @@ public class DynamicTypedStagingJobConfig {
     /* ---------- 4) Step technique : truncate staging ---------- */
 
     @Bean
-    public Step truncateTypedStagingStep() {
+    public Step truncateTypedStagingStepParalel() {
         return new StepBuilder("truncate-staging", jobRepository)
                 .tasklet((contribution, chunkContext) -> {
                     JdbcTemplate jdbc = new JdbcTemplate(dataSource);
@@ -192,9 +199,19 @@ public class DynamicTypedStagingJobConfig {
     /* ---------- 5) Job dynamique linéaire ---------- */
 
 
-    /*
     @Bean
-    public Job importToStaging() {
+    public TaskExecutor stepTaskExecutor() {
+        var t = new ThreadPoolTaskExecutor();
+        t.setThreadNamePrefix("import-");
+        t.setCorePoolSize(4);        // <- limite le parallélisme
+        t.setMaxPoolSize(4);
+        t.setQueueCapacity(0);
+        t.initialize();
+        return t;
+    }
+
+    @Bean
+    public Job importToStagingParalelStep() {
         List<Step> importSteps = catalog().stream()
                 .map(this::buildStep)
                 .toList();
@@ -202,15 +219,26 @@ public class DynamicTypedStagingJobConfig {
         JobBuilder jb = new JobBuilder("importToStaging", jobRepository);
 
         if (importSteps.isEmpty()) {
-            return jb.start(truncateTypedStagingStep()).build();
+            return jb.start(truncateTypedStagingStepParalel()).build();
         }
 
-        SimpleJobBuilder sjb = jb.start(truncateTypedStagingStep());
-        for (Step s : importSteps) {
-            sjb = sjb.next(s);
-        }
-        return sjb.build();
+        // Chaque step -> flow indépendant
+        List<Flow> flows = importSteps.stream()
+                .map(s -> new FlowBuilder<Flow>(s.getName() + "Flow").start(s).end())
+                .toList();
+
+        // Flow maître: truncate puis split parallèle
+        Flow master =
+                new FlowBuilder<Flow>("masterFlow")
+                        .start(truncateTypedStagingStepParalel())
+                        .split(stepTaskExecutor())              // <-- parallélisme ici
+                        .add(flows.toArray(new Flow[0]))
+                        .build();
+
+        return jb
+                .start(master) // <-- on démarre le job avec un Flow
+                .end()
+                .build();
     }
 
-     */
 }
