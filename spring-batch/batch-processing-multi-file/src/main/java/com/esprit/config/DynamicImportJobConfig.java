@@ -28,7 +28,7 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-class DynamicStagingJobConfig {
+class DynamicImportJobConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
