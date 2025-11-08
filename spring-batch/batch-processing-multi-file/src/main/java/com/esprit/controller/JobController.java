@@ -21,8 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobController {
 
     private final JobLauncher jobLauncher;
-    private final Job importStagingJob;
-    private final Job importDynamicStagingJob;
+    // private final Job importStagingJob;
+    // private final Job importDynamicStagingJob;
+    private final Job importToStaging;
 
 
 
@@ -31,7 +32,7 @@ public class JobController {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
         try {
-            jobLauncher.run(importDynamicStagingJob, jobParameters);
+            jobLauncher.run(importToStaging, jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
                  JobParametersInvalidException e) {
             log.error(e.getMessage());

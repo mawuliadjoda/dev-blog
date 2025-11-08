@@ -178,6 +178,8 @@ class DynamicImportJobConfig {
     }
 
     /** Job linéaire : truncate -> step1 -> step2 -> ... -> stepN */
+
+    /*
     @Bean
     public Job importDynamicStagingJob() {
         List<Step> steps = buildAllImportSteps();
@@ -196,4 +198,6 @@ class DynamicImportJobConfig {
         }
         return sjb.build();
     }
+
+     */
 }
