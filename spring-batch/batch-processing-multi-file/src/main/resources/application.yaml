@@ -25,3 +25,20 @@ spring:
     url: jdbc:postgresql://localhost:5432/batch_db_multi_file?rewriteBatchedInserts=true
     username: root
     password: root123
+
+
+
+#batch:
+#  imports:
+#    - name: customer
+#      file: src/main/resources/customers.csv
+#      table: stg_customer
+#      columns: id,first_name,last_name,email,gender,contact,country,dob
+#    - name: order
+#      file: src/main/resources/orders.csv
+#      table: stg_order
+#      columns: id,customer_id,order_date,amount,status
+#    - name: invoice
+#      file: src/main/resources/invoices.csv
+#      table: stg_invoice
+#      columns: id,order_id,invoice_date,total

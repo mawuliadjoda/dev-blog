@@ -195,15 +195,15 @@ public class BatchConfig {
     }
 
     // ---------- JOB ----------
-    @Bean
-    public Job importStagingJob(JobRepository jr,
-                                Step truncateStagingStep,
-                                Step importCustomersStep,
-                                Step importOrdersStep) {
-        return new JobBuilder("importToStaging", jr)
-                .start(truncateStagingStep)
-                .next(importCustomersStep)
-                .next(importOrdersStep)
-                .build();
-    }
+    // @Bean
+    // public Job importStagingJob(JobRepository jr,
+    //                             Step truncateStagingStep,
+    //                             Step importCustomersStep,
+    //                             Step importOrdersStep) {
+    //     return new JobBuilder("importToStaging", jr)
+    //             .start(truncateStagingStep)
+    //             .next(importCustomersStep)
+    //             .next(importOrdersStep)
+    //             .build();
+    // }
 }

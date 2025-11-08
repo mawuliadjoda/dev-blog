@@ -21,14 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobController {
 
     private final JobLauncher jobLauncher;
-    private final Job job;
+    private final Job importStagingJob;
+    private final Job importDynamicStagingJob;
+
+
 
     @PostMapping(value = "/import-csv-to-customers")
     public void importCsvToCustomers() {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
         try {
-            jobLauncher.run(job, jobParameters);
+            jobLauncher.run(importDynamicStagingJob, jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
                  JobParametersInvalidException e) {
             log.error(e.getMessage());
