@@ -13,4 +13,6 @@ public class StgCustomer {
     private String contactNo;
     private String country;
     private LocalDate dob;
+
+    private String batchId;
 }

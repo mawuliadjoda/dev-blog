@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/job")
 @RequiredArgsConstructor
@@ -30,7 +32,9 @@ public class JobController {
 
     @PostMapping(value = "/import-csv-to-customers")
     public void importCsvToCustomers() {
+        String batchId = UUID.randomUUID().toString();
         JobParameters jobParameters = new JobParametersBuilder()
+                .addString("batchId", batchId)
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
         try {
             jobLauncher.run(importToStagingParalelStep, jobParameters);

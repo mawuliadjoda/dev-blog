@@ -11,4 +11,6 @@ public class StgOrder {
     private LocalDate orderDate;
     private BigDecimal amount;
     private String status;
+
+    private String batchId;
 }

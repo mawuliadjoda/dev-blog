@@ -1,5 +1,6 @@
 package com.esprit.config;
 
+import com.esprit.config.config.BatchIdEnricherProcessor;
 import com.esprit.domain.model.StgCustomer;
 import com.esprit.domain.model.StgOrder;
 import lombok.RequiredArgsConstructor;
@@ -90,9 +91,9 @@ public class DynamicTypedStagingJobConfigParalelStep {
                     return c;
                 },
                 """
-                        INSERT INTO stg_customer (customer_id, first_name, last_name, email, gender, contact, country, dob)
-                        VALUES (:id, :firstName, :lastName, :email, :gender, :contactNo, :country, :dob)
-                        ON CONFLICT (customer_id) DO UPDATE SET
+                        INSERT INTO stg_customer (batch_id, customer_id, first_name, last_name, email, gender, contact, country, dob)
+                        VALUES (:batchId, :id, :firstName, :lastName, :email, :gender, :contactNo, :country, :dob)
+                        ON CONFLICT (batch_id, customer_id) DO UPDATE SET
                           first_name = EXCLUDED.first_name,
                           last_name  = EXCLUDED.last_name,
                           email      = EXCLUDED.email,
@@ -117,9 +118,9 @@ public class DynamicTypedStagingJobConfigParalelStep {
                     return o;
                 },
                 """
-                        INSERT INTO stg_order (order_id, customer_id, order_date, amount, status)
-                        VALUES (:id, :customerId, :orderDate, :amount, :status)
-                        ON CONFLICT (order_id) DO UPDATE SET
+                        INSERT INTO stg_order (batch_id, order_id, customer_id, order_date, amount, status)
+                        VALUES (:batchId, :id, :customerId, :orderDate, :amount, :status)
+                        ON CONFLICT (batch_id, order_id) DO UPDATE SET
                           customer_id = EXCLUDED.customer_id,
                           order_date  = EXCLUDED.order_date,
                           amount      = EXCLUDED.amount,
@@ -178,6 +179,7 @@ public class DynamicTypedStagingJobConfigParalelStep {
         return new StepBuilder("import-" + def.name(), jobRepository)
                 .<T, T>chunk(1000, transactionManager)
                 .reader(buildReader(def))
+                .processor(new BatchIdEnricherProcessor<>())     // <- ajoute le batchId à chaque item
                 .writer(buildWriter(def))
                 .build();
     }
