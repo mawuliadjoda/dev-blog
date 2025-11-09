@@ -373,6 +373,55 @@ public class DynamicTypedStagingJobConfigParalelStep {
                 .build();
     }
 
+    /* ---- */
+
+    @Bean
+    public Step insertTargetsStep() {
+        return new StepBuilder("insertTargetsStep", jobRepository)
+                .tasklet((contribution, ctx) -> {
+                    String batchId = String.valueOf(ctx.getStepContext().getJobParameters().get("batchId"));
+                    var p = Map.of("batchId", batchId);
+
+                    // 1) CUSTOMER : upsert depuis la staging valide du batch
+                    int insCustomers = namedParameterJdbcTemplate().update("""
+            INSERT INTO customer (customer_id, first_name, last_name, email, gender, contact, country, dob, created_at, updated_at)
+            SELECT DISTINCT s.customer_id, s.first_name, s.last_name, s.email, s.gender, s.contact, s.country, s.dob, now(), now()
+              FROM stg_customer s
+             WHERE s.batch_id = :batchId
+               AND s.valid_flag = TRUE
+            ON CONFLICT (customer_id) DO UPDATE SET
+              first_name = EXCLUDED.first_name,
+              last_name  = EXCLUDED.last_name,
+              email      = EXCLUDED.email,
+              gender     = EXCLUDED.gender,
+              contact    = EXCLUDED.contact,
+              country    = EXCLUDED.country,
+              dob        = EXCLUDED.dob,
+              updated_at = now()
+          """, p);
+
+                    // 2) ORDERS : upsert si parent existe (sécurité supplémentaire)
+                    int insOrders = namedParameterJdbcTemplate().update("""
+            INSERT INTO orders (order_id, customer_id, order_date, amount, status, created_at, updated_at)
+            SELECT o.order_id, o.customer_id, o.order_date, o.amount, o.status, now(), now()
+              FROM stg_order o
+             WHERE o.batch_id = :batchId
+               AND o.valid_flag = TRUE
+               AND EXISTS (SELECT 1 FROM customer c WHERE c.customer_id = o.customer_id)
+            ON CONFLICT (order_id) DO UPDATE SET
+              customer_id = EXCLUDED.customer_id,
+              order_date  = EXCLUDED.order_date,
+              amount      = EXCLUDED.amount,
+              status      = EXCLUDED.status,
+              updated_at  = now()
+          """, p);
+
+                    // (optionnel) log technique
+                    contribution.incrementWriteCount(insCustomers + insOrders);
+                    return RepeatStatus.FINISHED;
+                }, transactionManager)
+                .build();
+    }
 
     /* ---------- 8) Job 1 (standalone) : Import seulement ---------- */
     @Bean
@@ -389,6 +438,17 @@ public class DynamicTypedStagingJobConfigParalelStep {
         return new JobBuilder("importThenClean", jobRepository)
                 .start(importStagingFlow())   // on réutilise exactement le même flow d’import
                 .next(cleanAndRejectStep())   // puis le step de nettoyage + rejets
+                .end()
+                .build();
+    }
+
+
+    @Bean
+    public Job importCleanInsertJob() {
+        return new JobBuilder("importCleanInsert", jobRepository)
+                .start(importStagingFlow())  // 1) Import CSV -> staging (parallèle)
+                .next(cleanAndRejectStep())  // 2) Nettoyage + rejets
+                .next(insertTargetsStep())   // 3) Insertion dans les cibles
                 .end()
                 .build();
     }
