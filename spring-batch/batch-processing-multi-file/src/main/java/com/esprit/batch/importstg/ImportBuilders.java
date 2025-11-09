@@ -1,6 +1,6 @@
 package com.esprit.batch.importstg;
 
-import com.esprit.config.config.BatchIdEnricherProcessor;
+import com.esprit.batch.processor.BatchIdEnricherProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;

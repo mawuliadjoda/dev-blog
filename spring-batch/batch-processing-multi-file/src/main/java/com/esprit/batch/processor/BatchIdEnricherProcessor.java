@@ -1,4 +1,4 @@
-package com.esprit.config.config;
+package com.esprit.batch.processor;
 
 import com.esprit.domain.model.StgCustomer;
 import com.esprit.domain.model.StgOrder;

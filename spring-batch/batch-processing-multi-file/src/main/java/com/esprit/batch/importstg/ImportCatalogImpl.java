@@ -12,23 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 
-// @Component
-// @RequiredArgsConstructor
-// public class YamlImportCatalog implements ImportCatalog {
-//     private final ImportProperties props;
-//
-//     @Override public List<ImportDef<?>> catalog() {
-//         DateTimeFormatter DMY = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//         // … construire customers / orders comme tu le fais, mais en lisant props.*
-//         // retourner List.of(customers, orders);
-//         return List.of();
-//     }
-// }
-
-
 @Component
 @RequiredArgsConstructor
-public class YamlImportCatalog implements ImportCatalog {
+public class ImportCatalogImpl implements ImportCatalog {
 
     private final ImportProperties props;
 
