@@ -27,18 +27,9 @@ spring:
     password: root123
 
 
-
-#batch:
-#  imports:
-#    - name: customer
-#      file: src/main/resources/customers.csv
-#      table: stg_customer
-#      columns: id,first_name,last_name,email,gender,contact,country,dob
-#    - name: order
-#      file: src/main/resources/orders.csv
-#      table: stg_order
-#      columns: id,customer_id,order_date,amount,status
-#    - name: invoice
-#      file: src/main/resources/invoices.csv
-#      table: stg_invoice
-#      columns: id,order_id,invoice_date,total
+batch:
+  import:
+    customersFile: "src/main/resources/customers.csv"
+    ordersFile: "src/main/resources/orders.csv"
+    allowedStatuses: [NEW, PAID, CANCELLED, SHIPPED, REFUNDED]
+    allowedGenders: [Male, Female, Other, Unknown]
