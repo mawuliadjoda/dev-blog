@@ -10,6 +10,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +27,11 @@ public class JobController {
     // private final Job importStagingJob;
     // private final Job importDynamicStagingJob;
     // private final Job importToStaging;
-    private final Job importToStagingParalelStep;
+    //private final Job importToStagingParalelStep;
 
 
 
+    /*
     @PostMapping(value = "/import-csv-to-customers")
     public void importCsvToCustomers() {
         String batchId = UUID.randomUUID().toString();
@@ -43,4 +45,35 @@ public class JobController {
             log.error(e.getMessage());
         }
     }
+
+     */
+
+    private final Job importToStagingJob;   // Job 1 (import seul)
+    private final Job importThenCleanJob;   // Job 2 (import → clean)
+
+    @PostMapping("/run-import")
+    public ResponseEntity<String> runImport() throws Exception {
+        String batchId = UUID.randomUUID().toString();
+        JobParameters params = new JobParametersBuilder()
+                .addString("batchId", batchId)
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+
+        jobLauncher.run(importToStagingJob, params);
+        return ResponseEntity.ok("Import lancé, batchId = " + batchId);
+    }
+
+    @PostMapping("/run-import-clean")
+    public ResponseEntity<String> runImportThenClean() throws Exception {
+        String batchId = UUID.randomUUID().toString();
+        JobParameters params = new JobParametersBuilder()
+                .addString("batchId", batchId)
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+
+        jobLauncher.run(importThenCleanJob, params);
+        return ResponseEntity.ok("Import + Clean lancés, batchId = " + batchId);
+    }
+
+
 }

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -31,6 +32,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
@@ -212,6 +214,7 @@ public class DynamicTypedStagingJobConfigParalelStep {
         return t;
     }
 
+    /*
     @Bean
     public Job importToStagingParalelStep() {
         List<Step> importSteps = catalog().stream()
@@ -239,6 +242,153 @@ public class DynamicTypedStagingJobConfigParalelStep {
 
         return jb
                 .start(master) // <-- on démarre le job avec un Flow
+                .end()
+                .build();
+    }
+
+     */
+
+    /* ---------- 6) FLOW d’import (réutilisable) ---------- */
+    @Bean
+    public Flow importStagingFlow() {
+        List<Step> importSteps = catalog().stream().map(this::buildStep).toList();
+
+        // Chaque step -> flow indépendant
+        List<Flow> flows = importSteps.stream()
+                .map(s -> new FlowBuilder<Flow>(s.getName() + "Flow").start(s).end())
+                .toList();
+
+        // Flow maître: truncate puis split parallèle
+        return new FlowBuilder<Flow>("importStagingFlow")
+                .start(truncateTypedStagingStepParalel())
+                .split(stepTaskExecutor())
+                .add(flows.toArray(new Flow[0]))
+                .build();
+    }
+
+
+    /* ---------- 7) Step de nettoyage + rejets ---------- */
+
+    @Bean
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+        return new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public Step cleanAndRejectStep() {
+        return new StepBuilder("cleanAndRejectStep", jobRepository)
+                .tasklet((contribution, ctx) -> {
+                    String batchId = String.valueOf(ctx.getStepContext().getJobParameters().get("batchId"));
+                    var p = Map.of("batchId", batchId);
+
+                    // Reset (idempotence)
+                    namedParameterJdbcTemplate().update(
+                            "UPDATE stg_customer SET valid_flag=TRUE, error_code=NULL, error_msg=NULL WHERE batch_id=:batchId", p);
+                    namedParameterJdbcTemplate().update(
+                            "UPDATE stg_order    SET valid_flag=TRUE, error_code=NULL, error_msg=NULL WHERE batch_id=:batchId", p);
+
+                    // Règles stg_customer
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_customer
+               SET valid_flag = FALSE, error_code = 'EMAIL_FORMAT', error_msg = 'Email invalide'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND (email IS NULL OR email !~ '^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_customer
+               SET valid_flag = FALSE, error_code = 'GENDER_INVALID', error_msg = 'Valeur non autorisée'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND COALESCE(gender,'') NOT IN ('Male','Female','Other','Unknown')
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_customer
+               SET valid_flag = FALSE, error_code = 'DOB_FUTURE', error_msg = 'Date de naissance future'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND dob > CURRENT_DATE
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_customer
+               SET valid_flag = FALSE, error_code = 'DOB_AGE_RANGE', error_msg = 'Âge > 120 ans'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND dob IS NOT NULL AND dob < CURRENT_DATE - INTERVAL '120 years'
+          """, p);
+
+                    // Règles stg_order
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_order
+               SET valid_flag = FALSE, error_code = 'AMOUNT_NEG', error_msg = 'Montant négatif'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND amount IS NOT NULL AND amount < 0
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_order
+               SET valid_flag = FALSE, error_code = 'STATUS_INVALID', error_msg = 'Valeur non autorisée'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND COALESCE(status,'') NOT IN ('NEW','PAID','CANCELLED','SHIPPED','REFUNDED')
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_order
+               SET valid_flag = FALSE, error_code = 'DATE_FUTURE', error_msg = 'Date future'
+             WHERE batch_id = :batchId AND valid_flag = TRUE
+               AND order_date > CURRENT_DATE
+          """, p);
+
+                    // Pré-validation FK (contre staging customers valides du même batch)
+                    namedParameterJdbcTemplate().update("""
+            UPDATE stg_order o
+               SET valid_flag = FALSE, error_code = 'FK_CUSTOMER', error_msg = 'Customer inexistant'
+             WHERE o.batch_id = :batchId AND o.valid_flag = TRUE
+               AND NOT EXISTS (
+                 SELECT 1 FROM stg_customer c
+                  WHERE c.batch_id = o.batch_id
+                    AND c.valid_flag = TRUE
+                    AND c.customer_id = o.customer_id
+               )
+          """, p);
+
+                    // Traçage des rejets
+                    namedParameterJdbcTemplate().update("DELETE FROM rejets WHERE batch_id = :batchId", p);
+
+                    namedParameterJdbcTemplate().update("""
+            INSERT INTO rejets (batch_id, source_table, source_pk, error_code, error_msg, payload_json)
+            SELECT :batchId, 'stg_customer', CAST(customer_id AS VARCHAR), error_code, error_msg, to_jsonb(s.*)
+              FROM stg_customer s
+             WHERE s.batch_id = :batchId AND s.valid_flag = FALSE AND s.error_code IS NOT NULL
+          """, p);
+
+                    namedParameterJdbcTemplate().update("""
+            INSERT INTO rejets (batch_id, source_table, source_pk, error_code, error_msg, payload_json)
+            SELECT :batchId, 'stg_order', CAST(order_id AS VARCHAR), error_code, error_msg, to_jsonb(o.*)
+              FROM stg_order o
+             WHERE o.batch_id = :batchId AND o.valid_flag = FALSE AND o.error_code IS NOT NULL
+          """, p);
+
+                    return RepeatStatus.FINISHED;
+                }, transactionManager)
+                .build();
+    }
+
+
+    /* ---------- 8) Job 1 (standalone) : Import seulement ---------- */
+    @Bean
+    public Job importToStagingJob() {
+        return new JobBuilder("importToStaging", jobRepository)
+                .start(importStagingFlow())   // le flow d’import (truncate + split)
+                .end()
+                .build();
+    }
+
+    /* ---------- 9) Job 2 (orchestration) : Import → Clean ---------- */
+    @Bean
+    public Job importThenCleanJob() {
+        return new JobBuilder("importThenClean", jobRepository)
+                .start(importStagingFlow())   // on réutilise exactement le même flow d’import
+                .next(cleanAndRejectStep())   // puis le step de nettoyage + rejets
                 .end()
                 .build();
     }
