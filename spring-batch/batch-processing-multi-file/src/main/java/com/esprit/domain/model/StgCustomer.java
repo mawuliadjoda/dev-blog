@@ -1,10 +1,11 @@
 package com.esprit.domain.model;
 
+import com.esprit.domain.model.common.BatchIdentifiable;
 import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class StgCustomer {
+public class StgCustomer implements BatchIdentifiable {
     private Long id;
     private String firstName;
     private String lastName;

@@ -1,6 +1,7 @@
 package com.esprit.batch.importstg;
 
 import com.esprit.batch.processor.BatchIdEnricherProcessor;
+import com.esprit.domain.model.common.BatchIdentifiable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
@@ -26,7 +27,7 @@ public class ImportBuilders {
     private final PlatformTransactionManager tx;
     private final DataSource dataSource;
 
-    public <T> FlatFileItemReader<T> reader(ImportCatalog.ImportDef<T> def) {
+    public <T extends BatchIdentifiable> FlatFileItemReader<T> reader(ImportCatalog.ImportDef<T> def) {
         var r = new FlatFileItemReader<T>();
         r.setName("reader-" + def.name());
         r.setResource(new FileSystemResource(def.file()));
@@ -51,7 +52,7 @@ public class ImportBuilders {
         return w;
     }
 
-    public <T> Step importStep(ImportCatalog.ImportDef<T> def) {
+    public <T extends BatchIdentifiable> Step importStep(ImportCatalog.ImportDef<T> def) {
         return new StepBuilder("import-" + def.name(), jobRepository)
                 .<T,T>chunk(1000, tx)
                 .reader(reader(def))
