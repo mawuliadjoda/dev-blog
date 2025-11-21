@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: file-consumer-service
+server:
+  port: 8081
+
+file:
+  provider:
+    base-url: http://localhost:8080
+
+  download:
+    directory: ./data
