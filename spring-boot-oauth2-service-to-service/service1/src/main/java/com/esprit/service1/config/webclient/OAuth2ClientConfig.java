@@ -1,4 +1,4 @@
-package com.esprit.service1.config;
+package com.esprit.service1.config.webclient;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

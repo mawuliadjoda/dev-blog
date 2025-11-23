@@ -1,4 +1,4 @@
-package com.esprit.service1.config;
+package com.esprit.service1.config.securityconfig;
 
 
 import org.springframework.context.annotation.Bean;

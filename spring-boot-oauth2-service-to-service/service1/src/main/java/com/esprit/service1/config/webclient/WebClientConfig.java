@@ -1,4 +1,4 @@
-package com.esprit.service1.config;
+package com.esprit.service1.config.webclient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
