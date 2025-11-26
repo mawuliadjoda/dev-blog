@@ -93,16 +93,27 @@ CREATE TABLE food_portion (
 
 INSERT INTO food_portion (food_id, label, grams)
 SELECT
-  fd.id AS food_id,
-  COALESCE(fp.portion_description, mu.name, 'portion') AS label,
-  NULLIF(fp.gram_weight, '')::numeric AS grams
+    f.id AS food_id,
+    TRIM(
+        CONCAT(
+            -- amount : “1”, “0.5” etc.
+            COALESCE(NULLIF(fp.amount, '')::text, ''),
+            ' ',
+            -- portion_description : “cup”, “slice”, “tbsp”
+            COALESCE(NULLIF(fp.portion_description, ''), ''),
+            -- modifier : “shredded”, “cooked”, “small”
+            CASE 
+                WHEN fp.modifier IS NULL OR fp.modifier = '' THEN '' 
+                ELSE ' ' || fp.modifier 
+            END
+        )
+    ) AS label,
+    
+    -- grams
+    NULLIF(fp.gram_weight, '')::numeric AS grams
+
 FROM usda_food_portion_raw fp
-JOIN food fd 
-  ON fd.usda_fdc_id = fp.fdc_id
-LEFT JOIN usda_measure_unit_raw mu 
-  ON mu.id = fp.measure_unit_id
-WHERE fp.gram_weight IS NOT NULL
-  AND fp.gram_weight <> '';
+JOIN food f ON f.usda_fdc_id = fp.fdc_id;
 
 --               -------------------------------------
 
