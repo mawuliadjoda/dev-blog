@@ -1,4 +1,4 @@
-package com.esprit.batch.downloadfile;
+package com.esprit.batch.downloadfile.properties;
 
 import lombok.Getter;
 import lombok.Setter;

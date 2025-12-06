@@ -1,6 +1,8 @@
-package com.esprit.batch.downloadfile;
+package com.esprit.batch.downloadfile.service;
 
 
+import com.esprit.batch.downloadfile.properties.FileProviderProperties;
+import com.esprit.batch.downloadfile.properties.FileStorageProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -17,13 +19,14 @@ public class FileDownloadService {
 
     private final RestClient restClient;
 
-    private final FileStorageProperties props;
+    private final FileStorageProperties fileStorageProperties;
+    private final FileProviderProperties providerProperties;
 
     public Path downloadAndSave(String fileName) throws IOException {
         try {
 
             byte[] fileBytes = restClient.get()
-                    .uri("http://localhost:8080/api/files/{fileName}", fileName)
+                    .uri(providerProperties.getBaseUrl() + "/api/files/{fileName}", fileName)
                     .retrieve()
                     .body(byte[].class);
 
@@ -31,7 +34,7 @@ public class FileDownloadService {
                 throw new IOException("Downloaded file is empty or null");
             }
 
-            Path dirPath = Paths.get(props.getDirectory());
+            Path dirPath = Paths.get(fileStorageProperties.getDirectory());
             Files.createDirectories(dirPath);
 
             Path targetFile = dirPath.resolve(fileName);

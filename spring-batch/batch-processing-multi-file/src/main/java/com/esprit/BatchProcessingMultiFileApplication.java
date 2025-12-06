@@ -1,7 +1,7 @@
 package com.esprit;
 
-import com.esprit.batch.downloadfile.FileProviderProperties;
-import com.esprit.batch.downloadfile.FileStorageProperties;
+import com.esprit.batch.downloadfile.properties.FileProviderProperties;
+import com.esprit.batch.downloadfile.properties.FileStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

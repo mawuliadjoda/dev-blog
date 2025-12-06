@@ -1,6 +1,8 @@
 package com.esprit.batch.downloadfile;
 
 
+import com.esprit.batch.downloadfile.properties.FileStorageProperties;
+import com.esprit.batch.downloadfile.service.FileDownloadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Step;
