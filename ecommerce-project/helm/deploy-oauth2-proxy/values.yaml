@@ -23,7 +23,7 @@ extraArgs:
   cookie-secure: false
 
   cookie-samesite: lax
-  cookie-refresh: 0h4m30s
+  cookie-refresh: 0h4m30s # inferieur à access_token validity  #https://oauth2-proxy.github.io/oauth2-proxy/configuration/session_storage/ => The "cookie-refresh" value controls when OAuth2 Proxy tries to refresh an Access-Token
   cookie-httponly: true
 
   silence-ping-logging: true

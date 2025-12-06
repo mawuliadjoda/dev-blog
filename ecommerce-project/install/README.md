@@ -12,3 +12,8 @@ minikube dashboard
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 helm version
+
+
+minikube start 
+minikube dashboard 
+minikube tunnel
