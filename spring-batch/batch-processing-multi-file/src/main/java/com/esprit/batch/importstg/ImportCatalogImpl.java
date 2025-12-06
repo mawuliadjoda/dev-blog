@@ -24,7 +24,7 @@ public class ImportCatalogImpl implements ImportCatalog {
 
         ImportDef<StgCustomer> customers = new ImportDef<>(
                 "customers",
-                props.getCustomersFile(), // ex: "classpath:customers.csv" ou "src/main/resources/customers.csv"
+                props.getCustomersFile(),
                 new String[] {"id","firstName","lastName","email","gender","contactNo","country","dob"},
                 (Function<FieldSet, StgCustomer>) fs -> {
                     StgCustomer c = new StgCustomer();

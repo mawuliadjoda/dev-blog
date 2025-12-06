@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: '@project.artifactId@'
@@ -29,7 +30,20 @@ spring:
 
 batch:
   import:
-    customersFile: "src/main/resources/customers.csv"
-    ordersFile: "src/main/resources/orders.csv"
+    #customersFile: "src/main/resources/customers.csv"
+    #ordersFile: "src/main/resources/orders.csv"
+    customersFile: "./data/customers.csv"
+    ordersFile: "./data/orders.csv"
     allowedStatuses: [NEW, PAID, CANCELLED, SHIPPED, REFUNDED]
     allowedGenders: [Male, Female, Other, Unknown]
+server:
+  port: 8081
+
+
+
+file:
+  provider:
+    base-url: http://localhost:8080
+
+  download:
+    directory: ./data

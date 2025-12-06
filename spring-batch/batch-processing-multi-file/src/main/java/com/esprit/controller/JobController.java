@@ -51,6 +51,8 @@ public class JobController {
     private final Job importToStagingJob;   // Job 1 (import seul)
     private final Job importThenCleanJob;   // Job 2 (import → clean)
     private final Job importCleanInsertJob;
+    private final Job downloadimportCleanInsertJob;
+
 
     @PostMapping("/run-import")
     public ResponseEntity<String> runImport() throws Exception {
@@ -87,6 +89,19 @@ public class JobController {
 
         jobLauncher.run(importCleanInsertJob, params);
         return ResponseEntity.ok("Pipeline import → clean → insert lancé, batchId = " + id);
+    }
+
+    @PostMapping("/run-full-with-download")
+    public ResponseEntity<String> runFullWithDownload() throws Exception {
+        String id = UUID.randomUUID().toString();
+
+        JobParameters params = new JobParametersBuilder()
+                .addString("batchId", id)
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+
+        jobLauncher.run(downloadimportCleanInsertJob, params);
+        return ResponseEntity.ok("Pipeline download -> import → clean → insert lancé, batchId = " + id);
     }
 
 
