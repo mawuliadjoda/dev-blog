@@ -1,34 +1,20 @@
 package com.esprit.batch.writer;
 
-import com.esprit.persistence.entities.StgCustomerEntity;
-import com.esprit.persistence.entities.StgOrderEntity;
-import com.esprit.persistence.repository.StgCustomerRepository;
-import com.esprit.persistence.repository.StgOrderRepository;
+import com.esprit.batch.reader.ImportCatalog;
+import com.esprit.persistence.entities.common.BatchIdentifiable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.data.RepositoryItemWriter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class ImportWritersConfig {
 
-    private final StgCustomerRepository stgCustomerRepository;
-    private final StgOrderRepository stgOrderRepository;
-
-    @Bean
-    public RepositoryItemWriter<StgCustomerEntity> stgCustomerWriter() {
-        RepositoryItemWriter<StgCustomerEntity> writer = new RepositoryItemWriter<>();
-        writer.setRepository(stgCustomerRepository);
-        writer.setMethodName("save"); // ou saveAll, mais save marche très bien
-        return writer;
+    public <T extends BatchIdentifiable> RepositoryItemWriter<T> writer(ImportCatalog.ImportDef<T> def) {
+        var w = new RepositoryItemWriter<T>();
+        w.setRepository(def.repository());
+        w.setMethodName("save");
+        return w;
     }
 
-    @Bean
-    public RepositoryItemWriter<StgOrderEntity> stgOrderWriter() {
-        RepositoryItemWriter<StgOrderEntity> writer = new RepositoryItemWriter<>();
-        writer.setRepository(stgOrderRepository);
-        writer.setMethodName("save");
-        return writer;
-    }
 }
