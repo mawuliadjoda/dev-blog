@@ -34,7 +34,8 @@ extraArgs:
   pass-access-token: true            # renvoyer l'access_token côté proxy
   set-authorization-header: true     # construire Authorization: Bearer <token>
   set-xauthrequest: true             # (optionnel) X-Auth-Request-* headers
-  scope: "openid email profile roles"
+  cookie-expire: 1h0m0s  # Le token sera rafrechi chaque 4m30s (cookie-refresh) longtemps mais on limite tout ça à 1h max à cause du offline_access
+  scope: "openid email profile roles offline_access" # Sans offline_access (rafraîchir tant que la session Keycloak est vivante) | Avec offline_access (on peux garder des sessions très longues, Keycloak utilise les offline sessions.)
 
 
 
