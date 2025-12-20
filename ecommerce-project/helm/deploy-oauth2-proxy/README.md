@@ -15,8 +15,13 @@ helm upgrade --install oauth2-proxy oauth2-proxy/oauth2-proxy --namespace defaul
 # Endpoints les plus utiles
 
 http://adjodadev.com/oauth2/start
+
 http://adjodadev.com/oauth2/auth
+
+   ![img.png](img.png)
+
 http://adjodadev.com/oauth2/userinfo
+
     {
     "user": "aa8c6451-2d00-407d-9a63-ae5d3d731b60",
     "email": "koffimawuli.adjoda@gmail.com",
@@ -31,8 +36,11 @@ http://adjodadev.com/oauth2/userinfo
     ],
     "preferredUsername": "mawuli"
     }
+
 http://adjodadev.com/oauth2/healthz
+
 http://adjodadev.com/oauth2/sign_out
+
 
 1) /oauth2/start  => http://adjodadev.com/oauth2/start
 
@@ -60,3 +68,8 @@ Très pratique pour tester rapidement “qui suis-je” côté proxy.
 Endpoint technique “auth_request/forwardauth”.
 
 Répond 200/401 et peut renvoyer des headers d’identité (et parfois tokens si configuré).
+
+
+# Fonctionnement du refresh token:
+
+![img_1.png](img_1.png)
