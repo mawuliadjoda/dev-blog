@@ -5,7 +5,7 @@ image:
 
 config:
   clientID: adjoda-webapp
-  #clientSecret: sHlVDQLhii/iJTmD0AYelXww0jUrY3EHpKj6CeER15Y=
+  clientSecret: y1soE4yAyjGpGq6Ur1AtoDi6EeYZl0UT
   cookieSecret: YmglTnMTSm2XqD1qvNnKzR2ffhp2pr20ijylhK4MzYA=
   #scope: openid profile email roles
   configFile: |
@@ -23,7 +23,7 @@ extraArgs:
   cookie-secure: false
 
   cookie-samesite: lax
-  cookie-refresh: 0h4m30s # inferieur à access_token validity  #https://oauth2-proxy.github.io/oauth2-proxy/configuration/session_storage/ => The "cookie-refresh" value controls when OAuth2 Proxy tries to refresh an Access-Token
+  cookie-refresh: 0h1m30s # inferieur à access_token validity  #https://oauth2-proxy.github.io/oauth2-proxy/configuration/session_storage/ => The "cookie-refresh" value controls when OAuth2 Proxy tries to refresh an Access-Token
   cookie-httponly: true
 
   silence-ping-logging: true
