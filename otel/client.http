@@ -1,0 +1,8 @@
+###
+GET http://localhost:8080/greet/world
+
+###
+GET http://localhost:8080/slow
+
+###
+GET http://localhost:8080/

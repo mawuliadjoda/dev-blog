@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: ot
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+  # METRICS -> OTLP/HTTP
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
+
+  # TRACES -> OTLP/HTTP
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
+
+  logging:
+    export:
+      otlp:
+        enabled: true
+
+logging:
+  level:
+    com.esprit: INFO
+    org.springframework.boot.actuator.autoconfigure.opentelemetry: DEBUG
+    org.springframework.boot.docker.compose: DEBUG
