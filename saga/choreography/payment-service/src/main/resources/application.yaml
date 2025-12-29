@@ -1,0 +1,58 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: payment-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment?currentSchema=payment_schema
+    username: root
+    password: root123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+
+
+  cloud:
+    function:
+      definition: reservePaymentCommand;orderCancelled
+    stream:
+      bindings:
+        # OUT
+        paymentReserved-out-0:
+          destination: payment.reserved
+        paymentFailed-out-0:
+          destination: payment.failed
+        reservePaymentCommand-in-0:
+          destination: payment.reserve.command
+          group: payment-service
+        orderCancelled-in-0:
+          destination: order.cancelled
+          group: payment-service
+
+      # Extensions Kafka "spécifiques" (DLQ, etc.)
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          reservePaymentCommand-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: payment.reserve.command.DLT
+          orderCancelled-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: order.cancelled.DLT
+      default:
+        content-type: application/json
+
+logging:
+  level:
+    org.springframework.cloud.stream: INFO
+    org.springframework.kafka: WARN

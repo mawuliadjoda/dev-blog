@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: stock-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stock?currentSchema=stock_schema
+    username: root
+    password: root123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+
+
+  cloud:
+    function:
+      definition: reserveStockCommand;orderCancelled
+    stream:
+      bindings:
+        # OUT
+        stockReserved-out-0:
+          destination: stock.reserved
+        stockFailed-out-0:
+          destination: stock.failed
+
+        # IN
+        reserveStockCommand-in-0:
+          destination: stock.reserve.command
+          group: stock-service
+        orderCancelled-in-0:
+          destination: order.cancelled
+          group: stock-service
+
+      # Extensions Kafka "spécifiques" (DLQ, etc.)
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          reserveStockCommand-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: stock.reserve.command.DLT
+          orderCancelled-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: order.cancelled.DLT
+      default:
+        content-type: application/json
+
+logging:
+  level:
+    org.springframework.cloud.stream: INFO
+    org.springframework.kafka: WARN
