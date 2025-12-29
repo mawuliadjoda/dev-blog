@@ -1,0 +1,82 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: order-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order?currentSchema=order_schema
+    username: root
+    password: root123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+
+
+  cloud:
+    function:
+      definition: paymentReserved;paymentFailed;stockReserved;stockFailed
+    stream:
+      bindings:
+        # OUT
+        reservePaymentCommand-out-0:
+          destination: payment.reserve.command
+        cancelPaymentCommand-out-0:
+          destination: payment.cancel.command
+        reserveStockCommand-out-0:
+          destination: stock.reserve.command
+        releaseStockCommand-out-0:
+          destination: stock.release.command
+        orderCompleted-out-0:
+          destination: order.completed
+        orderCancelled-out-0:
+          destination: order.cancelled
+
+        # IN
+        paymentReserved-in-0:
+          destination: payment.reserved
+          group: order-service
+        paymentFailed-in-0:
+          destination: payment.failed
+          group: order-service
+        stockReserved-in-0:
+          destination: stock.reserved
+          group: order-service
+        stockFailed-in-0:
+          destination: stock.failed
+          group: order-service
+
+      # Extensions Kafka "spécifiques" (DLQ, etc.)
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          paymentReserved-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: payment.reserved.DLT
+          paymentFailed-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: payment.failed.DLT
+          stockReserved-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: stock.reserved.DLT
+          stockFailed-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: stock.failed.DLT
+      default:
+        content-type: application/json
+
+logging:
+  level:
+    org.springframework.cloud.stream: INFO
+    org.springframework.kafka: WARN

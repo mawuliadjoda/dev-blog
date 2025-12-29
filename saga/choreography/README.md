@@ -22,6 +22,8 @@
 
 # Happy path: saga choreography
 
+curl -X POST http://localhost:8082/orders   -H "Content-Type: application/json"   -d '{"amount":180.00,"sku":"SKU-123","qty":1}'
+
 Client
 |
 |  HTTP POST /orders  (order-service:8082)
@@ -123,6 +125,8 @@ Kafka topic: order.completed
 
 
 ---------------------------------------------------------------------
+curl -X POST http://localhost:8082/orders   -H "Content-Type: application/json"   -d '{"amount":1970.00,"sku":"SKU-123","qty":10}'
+
 
 # payment fail” (compensation)
 
