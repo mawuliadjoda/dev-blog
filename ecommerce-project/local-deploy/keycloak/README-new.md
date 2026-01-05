@@ -33,6 +33,7 @@ ngrok http https://localhost:8443 --url=keycloak.adjoda.com.ngrok.app
   7. ![img_6.png](img_6.png)
   8. ![img_7.png](img_7.png)
   9. ![img_8.png](img_8.png)
+10. ![img_9.png](img_9.png) => Activer “one-time refresh token”
 
 # l'installation de keycloak dans kubernetes ne marche pas avec l'ingress. car le token-service contient l'ingress et non le DNS de keycloak dans le cluster
 ==> solution utiliser plus tard une external IP donc LoadBalancer
