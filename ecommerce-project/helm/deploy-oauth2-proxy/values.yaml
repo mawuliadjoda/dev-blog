@@ -5,7 +5,7 @@ image:
 
 config:
   clientID: adjoda-webapp
-  clientSecret: y1soE4yAyjGpGq6Ur1AtoDi6EeYZl0UT
+  clientSecret: e1Zr4wx6xbtZ3wxd4aq275TWzQbBm1Na
   cookieSecret: YmglTnMTSm2XqD1qvNnKzR2ffhp2pr20ijylhK4MzYA=
   #scope: openid profile email roles
   configFile: |
@@ -35,7 +35,7 @@ extraArgs:
   set-authorization-header: true     # construire Authorization: Bearer <token>
   set-xauthrequest: true             # (optionnel) X-Auth-Request-* headers
   cookie-expire: 1h0m0s  # Le token sera rafrechi chaque 4m30s (cookie-refresh) longtemps mais on limite tout ça à 1h max à cause du offline_access
-  scope: "openid email profile roles offline_access" # Sans offline_access (rafraîchir tant que la session Keycloak est vivante) | Avec offline_access (on peux garder des sessions très longues, Keycloak utilise les offline sessions.)
+  scope: "openid email profile roles" # Sans offline_access (rafraîchir tant que la session Keycloak est vivante) | Avec offline_access (on peux garder des sessions très longues, Keycloak utilise les offline sessions.)
 
 
 
