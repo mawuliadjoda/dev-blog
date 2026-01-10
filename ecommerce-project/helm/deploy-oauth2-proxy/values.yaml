@@ -1,11 +1,12 @@
 image:
-  repository: quay.io/oauth2-proxy/oauth2-proxy
+  registry: docker.io
+  repository: adjodamawuli/oauth2-proxy
   tag: v7.12.0   # on fige la version
 
 
 config:
   clientID: adjoda-webapp
-  clientSecret: e1Zr4wx6xbtZ3wxd4aq275TWzQbBm1Na
+  clientSecret: p1uxzqrbpx9Ghz4ykPwgI78NhHtO7rL3
   cookieSecret: YmglTnMTSm2XqD1qvNnKzR2ffhp2pr20ijylhK4MzYA=
   #scope: openid profile email roles
   configFile: |
