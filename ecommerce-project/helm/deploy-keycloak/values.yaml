@@ -1,0 +1,77 @@
+replicas: 1
+
+image:
+  repository: quay.io/keycloak/keycloak
+  tag: 25.0.6
+
+command:
+  - "/opt/keycloak/bin/kc.sh"
+args:
+  - "start"
+  - "--http-port=8080"
+
+extraEnv: |
+  - name: KEYCLOAK_ADMIN
+    value: admin
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: admin123
+
+  # HTTP interne (Traefik termine TLS si besoin)
+  - name: KC_HTTP_ENABLED
+    value: "true"
+
+  # ✅ DEV: hostname OK, mais pas strict (évite problèmes host/scheme)
+  - name: KC_HOSTNAME
+    value: keycloak.example.com
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+
+  # Cache local (pas de clustering)
+  - name: KC_CACHE
+    value: local
+
+  # ✅ Remplace KC_PROXY (deprecated)
+  - name: KC_PROXY_HEADERS
+    value: xforwarded
+
+  # DB
+  - name: KC_DB
+    value: postgres
+  - name: KC_DB_URL
+    value: jdbc:postgresql://kc-db-postgresql.default.svc.cluster.local:5432/keycloak
+  - name: KC_DB_USERNAME
+    value: keycloak
+  - name: KC_DB_PASSWORD
+    value: "ChangeMe_StrongPwd"
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8080
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    # ✅ écoute en HTTP et HTTPS (évite 404 quand tu testes en HTTP)
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    # ✅ laisse Traefik activer TLS seulement si tu utilises websecure
+    # (on ne force pas tls ici pour éviter les erreurs en dev)
+  rules:
+    - host: keycloak.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+  # ✅ DEV: désactivé pour éviter dépendance à un secret TLS
+  tls: []
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
