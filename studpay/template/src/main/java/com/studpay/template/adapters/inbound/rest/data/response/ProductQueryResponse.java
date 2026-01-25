@@ -1,4 +1,4 @@
-package com.esprit.product.adapters.inbound.rest.data.response;
+package com.studpay.template.adapters.inbound.rest.data.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

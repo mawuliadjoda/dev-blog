@@ -1,5 +1,5 @@
 
-package com.esprit.product.adapters.outbound.messaging;
+package com.studpay.template.adapters.outbound.messaging;
 
 public final class Topics {
     private Topics() {

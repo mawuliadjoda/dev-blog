@@ -1,4 +1,4 @@
-package com.esprit.product.adapters.inbound.rest.data.request;
+package com.studpay.template.adapters.inbound.rest.data.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;

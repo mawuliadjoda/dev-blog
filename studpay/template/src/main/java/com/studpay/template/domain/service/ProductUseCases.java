@@ -1,10 +1,13 @@
 
-package com.esprit.product.domain.service;
+package com.studpay.template.domain.service;
 
-import com.esprit.domain.model.exception.AppNotFoundException;
-import com.esprit.product.domain.model.Product;
-import com.esprit.product.domain.ports.ProductEventPublisher;
-import com.esprit.product.domain.ports.ProductRepositoryPort;
+
+
+
+import com.studpay.domain.model.exception.AppNotFoundException;
+import com.studpay.template.domain.model.Product;
+import com.studpay.template.domain.ports.ProductEventPublisher;
+import com.studpay.template.domain.ports.ProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,7 +1,8 @@
-package com.esprit.product.adapters.inbound.rest.mapper;
+package com.studpay.template.adapters.inbound.rest.mapper;
 
-import com.esprit.product.adapters.inbound.rest.data.request.ProductCreateRequest;
-import com.esprit.product.domain.model.Product;
+
+import com.studpay.template.adapters.inbound.rest.data.request.ProductCreateRequest;
+import com.studpay.template.domain.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

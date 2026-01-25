@@ -9,10 +9,10 @@ import java.util.Objects;
 import java.util.function.*;
 
 @SpringBootApplication
-public class LambdaApplication {
+public class LeetCodeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LambdaApplication.class, args);
+		SpringApplication.run(LeetCodeApplication.class, args);
 
 
 

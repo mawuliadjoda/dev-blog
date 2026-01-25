@@ -1,5 +1,5 @@
 
-package com.esprit.product.adapters.outbound.messaging.events;
+package com.studpay.template.adapters.outbound.messaging.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

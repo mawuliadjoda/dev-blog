@@ -1,5 +1,5 @@
 
-package com.esprit.product.domain.model;
+package com.studpay.template.domain.model;
 
 import lombok.*;
 

@@ -1,5 +1,5 @@
 
-package com.esprit.product.adapters.outbound.persistence.entity;
+package com.studpay.template.adapters.outbound.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

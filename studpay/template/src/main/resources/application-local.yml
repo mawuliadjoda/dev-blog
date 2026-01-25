@@ -24,27 +24,23 @@ spring:
     username: root
     password: root123
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # configuration needed for validating JWT token against our Keycloak server
-          issuer-uri: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
-
-          # Since JWT is signed and we need to verify its signature, we set the jwk-set-uri property to a Keycloak endpoint with
-          # the required data for JWT signature verification.
-          jwk-set-uri: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm/protocol/openid-connect/certs
+  #security:
+  #  oauth2:
+  #    resourceserver:
+  #      jwt:
+  #        issuer-uri: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm
+  #        jwk-set-uri: https://keycloak.adjoda.com.ngrok.app/realms/adjoda-dev-realm/protocol/openid-connect/certs
 
 
-  cloud:
-    stream:
-      bindings:
-        produceMessage-out-0:
-          destination: demo-topic
-        produceProductMessage-out-0:
-          destination: product-topic
-      kafka:
-        binder:
-          brokers: localhost:9092
+  #cloud:
+  #  stream:
+  #    bindings:
+  #      produceMessage-out-0:
+  #        destination: demo-topic
+  #      produceProductMessage-out-0:
+  #        destination: product-topic
+  #    kafka:
+  #      binder:
+  #        brokers: localhost:9092
     #function:
     #  definition: consumeMessage; #produceMessage

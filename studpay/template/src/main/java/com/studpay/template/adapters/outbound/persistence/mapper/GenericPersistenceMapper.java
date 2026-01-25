@@ -1,4 +1,4 @@
-package com.esprit.product.adapters.outbound.persistence.mapper;
+package com.studpay.template.adapters.outbound.persistence.mapper;
 
 import java.util.List;
 

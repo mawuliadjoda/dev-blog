@@ -1,5 +1,5 @@
 
-package com.esprit.product.adapters.inbound.rest.dto;
+package com.studpay.template.adapters.inbound.rest.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;

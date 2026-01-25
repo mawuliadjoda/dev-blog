@@ -1,9 +1,10 @@
-package com.esprit.product.config;
+package com.studpay.template.config;
 
-import com.esprit.product.domain.model.Greeting;
+
+import com.studpay.template.domain.model.Greeting;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.util.function.Consumer;
+
 import java.util.function.Supplier;
 
 @Configuration
@@ -13,6 +14,8 @@ public class KafkaStreamConfig {
     // Producer: Supplies messages to Kafka
     // This code will produce messages infinitely,
     // so I am using  firstRun variable and conditions to stop after producing the first message
+
+    /*
     @Bean
     public Supplier<Greeting> produceMessage() {
         return () -> {
@@ -27,6 +30,8 @@ public class KafkaStreamConfig {
             return null; // stops after first message
         };
     }
+
+     */
 
     // Consumer: Consumes messages from Kafka
     // @Bean

@@ -1,7 +1,8 @@
-package com.esprit.product.adapters.outbound.persistence.mapper;
+package com.studpay.template.adapters.outbound.persistence.mapper;
 
-import com.esprit.product.adapters.outbound.persistence.entity.ProductEntity;
-import com.esprit.product.domain.model.Product;
+
+import com.studpay.template.adapters.outbound.persistence.entity.ProductEntity;
+import com.studpay.template.domain.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

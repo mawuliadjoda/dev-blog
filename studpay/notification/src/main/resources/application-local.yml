@@ -8,15 +8,15 @@ spring:
   application:
     name: '@project.artifactId@'
 
-  cloud:
-    stream:
-      bindings:
-        consumeMessage-in-0:
-          destination: demo-topic
-        consumeProductMessage-in-0:
-          destination: product-topic
-      kafka:
-        binder:
-          brokers: localhost:9092
-    function:
-      definition: consumeMessage; consumeProductMessage
+  #cloud:
+  #  stream:
+  #    bindings:
+  #      consumeMessage-in-0:
+  #        destination: demo-topic
+  #      consumeProductMessage-in-0:
+  #        destination: product-topic
+  #    kafka:
+  #      binder:
+  #        brokers: localhost:9092
+  #  function:
+  #    definition: consumeMessage; consumeProductMessage

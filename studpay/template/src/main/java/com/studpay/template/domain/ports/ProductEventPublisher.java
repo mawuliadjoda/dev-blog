@@ -1,8 +1,8 @@
 
-package com.esprit.product.domain.ports;
+package com.studpay.template.domain.ports;
 
 
-import com.esprit.product.domain.model.Product;
+import com.studpay.template.domain.model.Product;
 
 public interface ProductEventPublisher {
     void publishProductUpdated(Product product);

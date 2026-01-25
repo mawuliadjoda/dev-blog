@@ -1,9 +1,10 @@
 
-package com.esprit.product.config;
+package com.studpay.template.config;
 
-import com.esprit.product.domain.ports.ProductEventPublisher;
-import com.esprit.product.domain.ports.ProductRepositoryPort;
-import com.esprit.product.domain.service.ProductUseCases;
+
+import com.studpay.template.domain.ports.ProductEventPublisher;
+import com.studpay.template.domain.ports.ProductRepositoryPort;
+import com.studpay.template.domain.service.ProductUseCases;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
